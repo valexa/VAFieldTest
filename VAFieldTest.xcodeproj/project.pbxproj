@@ -18,7 +18,8 @@
 		4A31F37E11E4D52000B3E5B1 /* Icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = 4A31F37B11E4D52000B3E5B1 /* Icon-72.png */; };
 		4A31F37F11E4D52000B3E5B1 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 4A31F37C11E4D52000B3E5B1 /* Icon.png */; };
 		4A31F38011E4D52000B3E5B1 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4A31F37D11E4D52000B3E5B1 /* Icon@2x.png */; };
-		4A9F475811E3BFFB00EF0A71 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A9F475711E3BFFB00EF0A71 /* CoreTelephony.framework */; };
+		4A9F475811E3BFFB00EF0A71 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A9F475711E3BFFB00EF0A71 /* CoreTelephony.framework */; settings = {ATTRIBUTES = (Required, ); }; };
+		4AA06ABD11E513840011DDBF /* VoiceServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4AA06ABC11E513840011DDBF /* VoiceServices.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +39,7 @@
 		4A31F37C11E4D52000B3E5B1 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
 		4A31F37D11E4D52000B3E5B1 /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon@2x.png"; sourceTree = "<group>"; };
 		4A9F475711E3BFFB00EF0A71 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
+		4AA06ABC11E513840011DDBF /* VoiceServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = VoiceServices.framework; path = System/Library/PrivateFrameworks/VoiceServices.framework; sourceTree = SDKROOT; };
 		4AFF435211E3CDF8007A6E6E /* CoreTelephony.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreTelephony.h; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* VAFieldTest-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "VAFieldTest-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -51,6 +53,7 @@
 				1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */,
 				288765A50DF7441C002DB57D /* CoreGraphics.framework in Frameworks */,
 				4A9F475811E3BFFB00EF0A71 /* CoreTelephony.framework in Frameworks */,
+				4AA06ABD11E513840011DDBF /* VoiceServices.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -114,6 +117,7 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4AA06ABC11E513840011DDBF /* VoiceServices.framework */,
 				4A9F475711E3BFFB00EF0A71 /* CoreTelephony.framework */,
 				1DF5F4DF0D08C38300B7A737 /* UIKit.framework */,
 				1D30AB110D05D00D00671497 /* Foundation.framework */,
@@ -193,6 +197,10 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SDKROOT)$(SYSTEM_LIBRARY_DIR)/PrivateFrameworks\"",
+				);
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -207,6 +215,10 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				COPY_PHASE_STRIP = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SDKROOT)$(SYSTEM_LIBRARY_DIR)/PrivateFrameworks\"",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = VAFieldTest_Prefix.pch;
 				INFOPLIST_FILE = "VAFieldTest-Info.plist";
@@ -223,8 +235,10 @@
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				PREBINDING = NO;
 				SDKROOT = iphoneos4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -236,9 +250,11 @@
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				PREBINDING = NO;
 				SDKROOT = iphoneos4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};

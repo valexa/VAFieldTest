@@ -10,6 +10,8 @@
 
 @interface VAFieldTestViewController : UIViewController {
 	IBOutlet UILabel *strength;	
+	NSObject *voice;
+	int oldStrength;
 }
 
 @end

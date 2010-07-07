@@ -9,7 +9,7 @@
 	};
 	1D3623250D0F684500981E51 /* VAFieldTestAppDelegate.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1256, 899}}";
+			sepNavIntBoundsRect = "{{0, 0}, {1256, 872}}";
 			sepNavSelRange = "{490, 0}";
 			sepNavVisRange = "{0, 690}";
 			sepNavWindowFrame = "{{38, 416}, {1169, 736}}";
@@ -23,16 +23,16 @@
 	};
 	28D7ACF60DDB3853001CB0EB /* VAFieldTestViewController.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1256, 897}}";
-			sepNavSelRange = "{269, 0}";
-			sepNavVisRange = "{0, 269}";
+			sepNavIntBoundsRect = "{{0, 0}, {1256, 894}}";
+			sepNavSelRange = "{295, 0}";
+			sepNavVisRange = "{0, 305}";
 		};
 	};
 	28D7ACF70DDB3853001CB0EB /* VAFieldTestViewController.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1256, 1742}}";
-			sepNavSelRange = "{3335, 0}";
-			sepNavVisRange = "{0, 2029}";
+			sepNavIntBoundsRect = "{{0, 0}, {1256, 1833}}";
+			sepNavSelRange = "{3235, 0}";
+			sepNavVisRange = "{2416, 1805}";
 		};
 	};
 	29B97313FDCFA39411CA2CEA /* Project object */ = {
@@ -70,26 +70,47 @@
 					PBXFileDataSource_Target_ColumnID,
 				);
 			};
-			PBXPerProjectTemplateStateSaveDate = 300209430;
-			PBXWorkspaceStateSaveDate = 300209430;
+			PBXConfiguration.PBXTargetDataSource.PBXTargetDataSource = {
+				PBXFileTableDataSourceColumnSortingDirectionKey = "-1";
+				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Filename_ColumnID;
+				PBXFileTableDataSourceColumnWidthsKey = (
+					20,
+					1038,
+					60,
+					20,
+					48.16259765625,
+					43,
+					43,
+				);
+				PBXFileTableDataSourceColumnsKey = (
+					PBXFileDataSource_FiletypeID,
+					PBXFileDataSource_Filename_ColumnID,
+					PBXTargetDataSource_PrimaryAttribute,
+					PBXFileDataSource_Built_ColumnID,
+					PBXFileDataSource_ObjectSize_ColumnID,
+					PBXFileDataSource_Errors_ColumnID,
+					PBXFileDataSource_Warnings_ColumnID,
+				);
+			};
+			PBXPerProjectTemplateStateSaveDate = 300225243;
+			PBXWorkspaceStateSaveDate = 300225243;
 		};
 		perUserProjectItems = {
 			4A31F34011E4D05900B3E5B1 /* PBXTextBookmark */ = 4A31F34011E4D05900B3E5B1 /* PBXTextBookmark */;
 			4A31F34211E4D05900B3E5B1 /* PBXTextBookmark */ = 4A31F34211E4D05900B3E5B1 /* PBXTextBookmark */;
-			4A31F34311E4D05900B3E5B1 /* PBXTextBookmark */ = 4A31F34311E4D05900B3E5B1 /* PBXTextBookmark */;
-			4A31F36C11E4D3D200B3E5B1 /* PBXTextBookmark */ = 4A31F36C11E4D3D200B3E5B1 /* PBXTextBookmark */;
-			4A31F39211E4D71100B3E5B1 /* PBXTextBookmark */ = 4A31F39211E4D71100B3E5B1 /* PBXTextBookmark */;
-			4A31F39311E4D71100B3E5B1 /* PBXBookmark */ = 4A31F39311E4D71100B3E5B1 /* PBXBookmark */;
-			4A31F39411E4D71100B3E5B1 /* PBXBookmark */ = 4A31F39411E4D71100B3E5B1 /* PBXBookmark */;
-			4A31F39511E4D71100B3E5B1 /* PBXBookmark */ = 4A31F39511E4D71100B3E5B1 /* PBXBookmark */;
-			4A31F39611E4D71100B3E5B1 /* PBXBookmark */ = 4A31F39611E4D71100B3E5B1 /* PBXBookmark */;
+			4AA06B0C11E5182A0011DDBF /* PBXTextBookmark */ = 4AA06B0C11E5182A0011DDBF /* PBXTextBookmark */;
+			4AA06B0D11E5182A0011DDBF /* PBXTextBookmark */ = 4AA06B0D11E5182A0011DDBF /* PBXTextBookmark */;
+			4AA06B0E11E5182A0011DDBF /* PBXTextBookmark */ = 4AA06B0E11E5182A0011DDBF /* PBXTextBookmark */;
+			4AB8954811E4E7C500D4685A /* PBXBookmark */ = 4AB8954811E4E7C500D4685A /* PBXBookmark */;
+			4AB8954911E4E7C500D4685A /* PBXBookmark */ = 4AB8954911E4E7C500D4685A /* PBXBookmark */;
+			4AB8954A11E4E7C500D4685A /* PBXBookmark */ = 4AB8954A11E4E7C500D4685A /* PBXBookmark */;
+			4AB8954B11E4E7C500D4685A /* PBXTextBookmark */ = 4AB8954B11E4E7C500D4685A /* PBXTextBookmark */;
 			4AEF0BCF11E497A4008805AB /* PBXTextBookmark */ = 4AEF0BCF11E497A4008805AB /* PBXTextBookmark */;
 			4AEF0BD211E497A4008805AB /* PBXTextBookmark */ = 4AEF0BD211E497A4008805AB /* PBXTextBookmark */;
 			4AFF43D211E3D430007A6E6E /* PBXTextBookmark */ = 4AFF43D211E3D430007A6E6E /* PBXTextBookmark */;
 			4AFF43D411E3D430007A6E6E /* PBXTextBookmark */ = 4AFF43D411E3D430007A6E6E /* PBXTextBookmark */;
 			4AFF43D611E3D430007A6E6E /* PBXTextBookmark */ = 4AFF43D611E3D430007A6E6E /* PBXTextBookmark */;
 			4AFF43D811E3D430007A6E6E /* PBXTextBookmark */ = 4AFF43D811E3D430007A6E6E /* PBXTextBookmark */;
-			4AFF43DB11E3D430007A6E6E /* PBXTextBookmark */ = 4AFF43DB11E3D430007A6E6E /* PBXTextBookmark */;
 		};
 		sourceControlManager = 4A9F472F11E3BF4E00EF0A71 /* Source Control */;
 		userBuildSettings = {
@@ -128,52 +149,6 @@
 		rType = 0;
 		vrLen = 1424;
 		vrLoc = 0;
-	};
-	4A31F34311E4D05900B3E5B1 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 1D3623250D0F684500981E51 /* VAFieldTestAppDelegate.m */;
-		name = "VAFieldTestAppDelegate.m: 21";
-		rLen = 0;
-		rLoc = 490;
-		rType = 0;
-		vrLen = 690;
-		vrLoc = 0;
-	};
-	4A31F36C11E4D3D200B3E5B1 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 28D7ACF60DDB3853001CB0EB /* VAFieldTestViewController.h */;
-		name = "VAFieldTestViewController.h: 17";
-		rLen = 0;
-		rLoc = 269;
-		rType = 0;
-		vrLen = 269;
-		vrLoc = 0;
-	};
-	4A31F39211E4D71100B3E5B1 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 28D7ACF70DDB3853001CB0EB /* VAFieldTestViewController.m */;
-		name = "VAFieldTestViewController.m: 105";
-		rLen = 0;
-		rLoc = 3335;
-		rType = 0;
-		vrLen = 2169;
-		vrLoc = 0;
-	};
-	4A31F39311E4D71100B3E5B1 /* PBXBookmark */ = {
-		isa = PBXBookmark;
-		fRef = 4A31F37B11E4D52000B3E5B1 /* Icon-72.png */;
-	};
-	4A31F39411E4D71100B3E5B1 /* PBXBookmark */ = {
-		isa = PBXBookmark;
-		fRef = 4A31F37C11E4D52000B3E5B1 /* Icon.png */;
-	};
-	4A31F39511E4D71100B3E5B1 /* PBXBookmark */ = {
-		isa = PBXBookmark;
-		fRef = 4A31F37D11E4D52000B3E5B1 /* Icon@2x.png */;
-	};
-	4A31F39611E4D71100B3E5B1 /* PBXBookmark */ = {
-		isa = PBXBookmark;
-		fRef = 4A31F37D11E4D52000B3E5B1 /* Icon@2x.png */;
 	};
 	4A9F472411E3BF4600EF0A71 /* VAFieldTest */ = {
 		isa = PBXExecutable;
@@ -218,6 +193,58 @@
 	4A9F473011E3BF4E00EF0A71 /* Code sense */ = {
 		isa = PBXCodeSenseManager;
 		indexTemplatePath = "";
+	};
+	4AA06B0C11E5182A0011DDBF /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 28D7ACF60DDB3853001CB0EB /* VAFieldTestViewController.h */;
+		name = "VAFieldTestViewController.h: 14";
+		rLen = 0;
+		rLoc = 295;
+		rType = 0;
+		vrLen = 305;
+		vrLoc = 0;
+	};
+	4AA06B0D11E5182A0011DDBF /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 28D7ACF70DDB3853001CB0EB /* VAFieldTestViewController.m */;
+		name = "VAFieldTestViewController.m: 101";
+		rLen = 0;
+		rLoc = 3146;
+		rType = 0;
+		vrLen = 1829;
+		vrLoc = 2425;
+	};
+	4AA06B0E11E5182A0011DDBF /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 28D7ACF70DDB3853001CB0EB /* VAFieldTestViewController.m */;
+		name = "VAFieldTestViewController.m: 104";
+		rLen = 0;
+		rLoc = 3235;
+		rType = 0;
+		vrLen = 1805;
+		vrLoc = 2416;
+	};
+	4AB8954811E4E7C500D4685A /* PBXBookmark */ = {
+		isa = PBXBookmark;
+		fRef = 4A31F37D11E4D52000B3E5B1 /* Icon@2x.png */;
+	};
+	4AB8954911E4E7C500D4685A /* PBXBookmark */ = {
+		isa = PBXBookmark;
+		fRef = 4A31F37C11E4D52000B3E5B1 /* Icon.png */;
+	};
+	4AB8954A11E4E7C500D4685A /* PBXBookmark */ = {
+		isa = PBXBookmark;
+		fRef = 4A31F37B11E4D52000B3E5B1 /* Icon-72.png */;
+	};
+	4AB8954B11E4E7C500D4685A /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 1D3623250D0F684500981E51 /* VAFieldTestAppDelegate.m */;
+		name = "VAFieldTestAppDelegate.m: 21";
+		rLen = 0;
+		rLoc = 490;
+		rType = 0;
+		vrLen = 690;
+		vrLoc = 0;
 	};
 	4AEF0BCF11E497A4008805AB /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
@@ -313,23 +340,6 @@
 		lastKnownFileType = sourcecode.c.h;
 		name = CTTelephonyNetworkInfo.h;
 		path = /Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS4.0.sdk/System/Library/Frameworks/CoreTelephony.framework/Headers/CTTelephonyNetworkInfo.h;
-		sourceTree = "<absolute>";
-	};
-	4AFF43DB11E3D430007A6E6E /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 4AFF43DC11E3D430007A6E6E /* telephony.c */;
-		name = "telephony.c: 1";
-		rLen = 0;
-		rLoc = 0;
-		rType = 0;
-		vrLen = 1702;
-		vrLoc = 0;
-	};
-	4AFF43DC11E3D430007A6E6E /* telephony.c */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.c.c;
-		name = telephony.c;
-		path = /Users/valexa/Desktop/telephony.c;
 		sourceTree = "<absolute>";
 	};
 }

@@ -96,7 +96,9 @@ int getSignalStrength()
 - (void)viewDidLoad {
     [super viewDidLoad];
 	
-    self.view.backgroundColor = [UIColor viewFlipsideBackgroundColor];	
+    self.view.backgroundColor = [UIColor viewFlipsideBackgroundColor];
+	
+	voice = [[NSClassFromString(@"VSSpeechSynthesizer") alloc] init];	
 	
 	start_monitor();	
 	register_notification();	
@@ -119,11 +121,16 @@ int getSignalStrength()
 }
 
 - (void)dealloc {
+	[voice release];
     [super dealloc];
 }
 
--(void)signalLoop{		
+-(void)signalLoop{				
 	[strength setText:[NSString stringWithFormat:@"%i",getSignalStrength()]];
+	if (voice && oldStrength != [strength.text intValue]) {
+		[voice startSpeakingString:strength.text];		
+	}
+	oldStrength = [strength.text intValue];	
 }
 
 -(void)infoLoop{
