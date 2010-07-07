@@ -15,6 +15,9 @@
 		2899E5220DE3E06400AC0155 /* VAFieldTestViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2899E5210DE3E06400AC0155 /* VAFieldTestViewController.xib */; };
 		28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD733E0D9D9553002E5188 /* MainWindow.xib */; };
 		28D7ACF80DDB3853001CB0EB /* VAFieldTestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D7ACF70DDB3853001CB0EB /* VAFieldTestViewController.m */; };
+		4A31F37E11E4D52000B3E5B1 /* Icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = 4A31F37B11E4D52000B3E5B1 /* Icon-72.png */; };
+		4A31F37F11E4D52000B3E5B1 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 4A31F37C11E4D52000B3E5B1 /* Icon.png */; };
+		4A31F38011E4D52000B3E5B1 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4A31F37D11E4D52000B3E5B1 /* Icon@2x.png */; };
 		4A9F475811E3BFFB00EF0A71 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A9F475711E3BFFB00EF0A71 /* CoreTelephony.framework */; };
 /* End PBXBuildFile section */
 
@@ -31,6 +34,9 @@
 		28D7ACF70DDB3853001CB0EB /* VAFieldTestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAFieldTestViewController.m; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* VAFieldTest_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAFieldTest_Prefix.pch; sourceTree = "<group>"; };
+		4A31F37B11E4D52000B3E5B1 /* Icon-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-72.png"; sourceTree = "<group>"; };
+		4A31F37C11E4D52000B3E5B1 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
+		4A31F37D11E4D52000B3E5B1 /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon@2x.png"; sourceTree = "<group>"; };
 		4A9F475711E3BFFB00EF0A71 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		4AFF435211E3CDF8007A6E6E /* CoreTelephony.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreTelephony.h; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* VAFieldTest-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "VAFieldTest-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
@@ -95,6 +101,9 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				4A31F37B11E4D52000B3E5B1 /* Icon-72.png */,
+				4A31F37C11E4D52000B3E5B1 /* Icon.png */,
+				4A31F37D11E4D52000B3E5B1 /* Icon@2x.png */,
 				2899E5210DE3E06400AC0155 /* VAFieldTestViewController.xib */,
 				28AD733E0D9D9553002E5188 /* MainWindow.xib */,
 				8D1107310486CEB800E47090 /* VAFieldTest-Info.plist */,
@@ -157,6 +166,9 @@
 			files = (
 				28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */,
 				2899E5220DE3E06400AC0155 /* VAFieldTestViewController.xib in Resources */,
+				4A31F37E11E4D52000B3E5B1 /* Icon-72.png in Resources */,
+				4A31F37F11E4D52000B3E5B1 /* Icon.png in Resources */,
+				4A31F38011E4D52000B3E5B1 /* Icon@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
