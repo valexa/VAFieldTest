@@ -1,0 +1,337 @@
+// !$*UTF8*$!
+{
+	1D3623240D0F684500981E51 /* VAFieldTestAppDelegate.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1256, 899}}";
+			sepNavSelRange = "{297, 0}";
+			sepNavVisRange = "{0, 495}";
+		};
+	};
+	1D3623250D0F684500981E51 /* VAFieldTestAppDelegate.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1256, 899}}";
+			sepNavSelRange = "{490, 0}";
+			sepNavVisRange = "{0, 690}";
+			sepNavWindowFrame = "{{38, 416}, {1169, 736}}";
+		};
+	};
+	1D6058900D05DD3D006BFB54 /* VAFieldTest */ = {
+		activeExec = 0;
+		executables = (
+			4A9F472411E3BF4600EF0A71 /* VAFieldTest */,
+		);
+	};
+	28D7ACF60DDB3853001CB0EB /* VAFieldTestViewController.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1256, 899}}";
+			sepNavSelRange = "{269, 0}";
+			sepNavVisRange = "{0, 269}";
+		};
+	};
+	28D7ACF70DDB3853001CB0EB /* VAFieldTestViewController.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1256, 1742}}";
+			sepNavSelRange = "{3194, 255}";
+			sepNavVisRange = "{1972, 2011}";
+		};
+	};
+	29B97313FDCFA39411CA2CEA /* Project object */ = {
+		activeBuildConfigurationName = Debug;
+		activeExecutable = 4A9F472411E3BF4600EF0A71 /* VAFieldTest */;
+		activeSDKPreference = iphoneos4.0;
+		activeTarget = 1D6058900D05DD3D006BFB54 /* VAFieldTest */;
+		addToTargets = (
+			1D6058900D05DD3D006BFB54 /* VAFieldTest */,
+		);
+		codeSenseManager = 4A9F473011E3BF4E00EF0A71 /* Code sense */;
+		executables = (
+			4A9F472411E3BF4600EF0A71 /* VAFieldTest */,
+		);
+		perUserDictionary = {
+			PBXConfiguration.PBXFileTableDataSource3.PBXFileTableDataSource = {
+				PBXFileTableDataSourceColumnSortingDirectionKey = "-1";
+				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Filename_ColumnID;
+				PBXFileTableDataSourceColumnWidthsKey = (
+					20,
+					1078,
+					20,
+					48,
+					43,
+					43,
+					20,
+				);
+				PBXFileTableDataSourceColumnsKey = (
+					PBXFileDataSource_FiletypeID,
+					PBXFileDataSource_Filename_ColumnID,
+					PBXFileDataSource_Built_ColumnID,
+					PBXFileDataSource_ObjectSize_ColumnID,
+					PBXFileDataSource_Errors_ColumnID,
+					PBXFileDataSource_Warnings_ColumnID,
+					PBXFileDataSource_Target_ColumnID,
+				);
+			};
+			PBXPerProjectTemplateStateSaveDate = 300208293;
+			PBXWorkspaceStateSaveDate = 300208293;
+		};
+		perUserProjectItems = {
+			4A31F34011E4D05900B3E5B1 = 4A31F34011E4D05900B3E5B1 /* PBXTextBookmark */;
+			4A31F34111E4D05900B3E5B1 = 4A31F34111E4D05900B3E5B1 /* PBXTextBookmark */;
+			4A31F34211E4D05900B3E5B1 = 4A31F34211E4D05900B3E5B1 /* PBXTextBookmark */;
+			4A31F34311E4D05900B3E5B1 = 4A31F34311E4D05900B3E5B1 /* PBXTextBookmark */;
+			4A31F34411E4D05900B3E5B1 = 4A31F34411E4D05900B3E5B1 /* PBXTextBookmark */;
+			4A31F34511E4D05900B3E5B1 = 4A31F34511E4D05900B3E5B1 /* PBXTextBookmark */;
+			4A31F35011E4D0A700B3E5B1 /* PBXTextBookmark */ = 4A31F35011E4D0A700B3E5B1 /* PBXTextBookmark */;
+			4AEF0BCF11E497A4008805AB = 4AEF0BCF11E497A4008805AB /* PBXTextBookmark */;
+			4AEF0BD211E497A4008805AB = 4AEF0BD211E497A4008805AB /* PBXTextBookmark */;
+			4AFF43D211E3D430007A6E6E = 4AFF43D211E3D430007A6E6E /* PBXTextBookmark */;
+			4AFF43D411E3D430007A6E6E = 4AFF43D411E3D430007A6E6E /* PBXTextBookmark */;
+			4AFF43D611E3D430007A6E6E = 4AFF43D611E3D430007A6E6E /* PBXTextBookmark */;
+			4AFF43D811E3D430007A6E6E = 4AFF43D811E3D430007A6E6E /* PBXTextBookmark */;
+			4AFF43DB11E3D430007A6E6E = 4AFF43DB11E3D430007A6E6E /* PBXTextBookmark */;
+		};
+		sourceControlManager = 4A9F472F11E3BF4E00EF0A71 /* Source Control */;
+		userBuildSettings = {
+		};
+	};
+	29B97316FDCFA39411CA2CEA /* main.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1256, 902}}";
+			sepNavSelRange = "{151, 0}";
+			sepNavVisRange = "{0, 356}";
+		};
+	};
+	32CA4F630368D1EE00C91783 /* VAFieldTest_Prefix.pch */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1256, 902}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{0, 191}";
+		};
+	};
+	4A31F34011E4D05900B3E5B1 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 1D3623240D0F684500981E51 /* VAFieldTestAppDelegate.h */;
+		name = "VAFieldTestAppDelegate.h: 15";
+		rLen = 0;
+		rLoc = 297;
+		rType = 0;
+		vrLen = 495;
+		vrLoc = 0;
+	};
+	4A31F34111E4D05900B3E5B1 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 28D7ACF60DDB3853001CB0EB /* VAFieldTestViewController.h */;
+		name = "VAFieldTestViewController.h: 17";
+		rLen = 0;
+		rLoc = 269;
+		rType = 0;
+		vrLen = 269;
+		vrLoc = 0;
+	};
+	4A31F34211E4D05900B3E5B1 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 4AFF435211E3CDF8007A6E6E /* CoreTelephony.h */;
+		name = "CoreTelephony.h: 43";
+		rLen = 41;
+		rLoc = 937;
+		rType = 0;
+		vrLen = 1424;
+		vrLoc = 0;
+	};
+	4A31F34311E4D05900B3E5B1 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 1D3623250D0F684500981E51 /* VAFieldTestAppDelegate.m */;
+		name = "VAFieldTestAppDelegate.m: 21";
+		rLen = 0;
+		rLoc = 490;
+		rType = 0;
+		vrLen = 690;
+		vrLoc = 0;
+	};
+	4A31F34411E4D05900B3E5B1 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 28D7ACF70DDB3853001CB0EB /* VAFieldTestViewController.m */;
+		name = "VAFieldTestViewController.m: 55";
+		rLen = 0;
+		rLoc = 1794;
+		rType = 0;
+		vrLen = 2275;
+		vrLoc = 173;
+	};
+	4A31F34511E4D05900B3E5B1 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 28D7ACF70DDB3853001CB0EB /* VAFieldTestViewController.m */;
+		name = "VAFieldTestViewController.m: 104";
+		rLen = 255;
+		rLoc = 3194;
+		rType = 0;
+		vrLen = 2011;
+		vrLoc = 1972;
+	};
+	4A31F35011E4D0A700B3E5B1 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 28D7ACF70DDB3853001CB0EB /* VAFieldTestViewController.m */;
+		name = "VAFieldTestViewController.m: 104";
+		rLen = 255;
+		rLoc = 3194;
+		rType = 0;
+		vrLen = 2011;
+		vrLoc = 1972;
+	};
+	4A9F472411E3BF4600EF0A71 /* VAFieldTest */ = {
+		isa = PBXExecutable;
+		activeArgIndices = (
+		);
+		argumentStrings = (
+		);
+		autoAttachOnCrash = 1;
+		breakpointsEnabled = 0;
+		configStateDict = {
+		};
+		customDataFormattersEnabled = 1;
+		dataTipCustomDataFormattersEnabled = 1;
+		dataTipShowTypeColumn = 1;
+		dataTipSortType = 0;
+		debuggerPlugin = GDBDebugging;
+		disassemblyDisplayState = 0;
+		dylibVariantSuffix = "";
+		enableDebugStr = 1;
+		environmentEntries = (
+		);
+		executableSystemSymbolLevel = 0;
+		executableUserSymbolLevel = 0;
+		libgmallocEnabled = 0;
+		name = VAFieldTest;
+		savedGlobals = {
+		};
+		showTypeColumn = 0;
+		sourceDirectories = (
+		);
+	};
+	4A9F472F11E3BF4E00EF0A71 /* Source Control */ = {
+		isa = PBXSourceControlManager;
+		fallbackIsa = XCSourceControlManager;
+		isSCMEnabled = 0;
+		scmConfiguration = {
+			repositoryNamesForRoots = {
+				"" = "";
+			};
+		};
+	};
+	4A9F473011E3BF4E00EF0A71 /* Code sense */ = {
+		isa = PBXCodeSenseManager;
+		indexTemplatePath = "";
+	};
+	4AEF0BCF11E497A4008805AB /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 32CA4F630368D1EE00C91783 /* VAFieldTest_Prefix.pch */;
+		name = "VAFieldTest_Prefix.pch: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 191;
+		vrLoc = 0;
+	};
+	4AEF0BD211E497A4008805AB /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 29B97316FDCFA39411CA2CEA /* main.m */;
+		name = "main.m: 11";
+		rLen = 0;
+		rLoc = 151;
+		rType = 0;
+		vrLen = 356;
+		vrLoc = 0;
+	};
+	4AFF435211E3CDF8007A6E6E /* CoreTelephony.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1256, 899}}";
+			sepNavSelRange = "{937, 41}";
+			sepNavVisRange = "{0, 1424}";
+			sepNavWindowFrame = "{{15, 442}, {1169, 736}}";
+		};
+	};
+	4AFF43D211E3D430007A6E6E /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 4AFF43D311E3D430007A6E6E /* CTCall.h */;
+		name = "CTCall.h: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 1337;
+		vrLoc = 0;
+	};
+	4AFF43D311E3D430007A6E6E /* CTCall.h */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.c.h;
+		name = CTCall.h;
+		path = /Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS4.0.sdk/System/Library/Frameworks/CoreTelephony.framework/Headers/CTCall.h;
+		sourceTree = "<absolute>";
+	};
+	4AFF43D411E3D430007A6E6E /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 4AFF43D511E3D430007A6E6E /* CTCallCenter.h */;
+		name = "CTCallCenter.h: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 940;
+		vrLoc = 0;
+	};
+	4AFF43D511E3D430007A6E6E /* CTCallCenter.h */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.c.h;
+		name = CTCallCenter.h;
+		path = /Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS4.0.sdk/System/Library/Frameworks/CoreTelephony.framework/Headers/CTCallCenter.h;
+		sourceTree = "<absolute>";
+	};
+	4AFF43D611E3D430007A6E6E /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 4AFF43D711E3D430007A6E6E /* CTCarrier.h */;
+		name = "CTCarrier.h: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 1634;
+		vrLoc = 0;
+	};
+	4AFF43D711E3D430007A6E6E /* CTCarrier.h */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.c.h;
+		name = CTCarrier.h;
+		path = /Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS4.0.sdk/System/Library/Frameworks/CoreTelephony.framework/Headers/CTCarrier.h;
+		sourceTree = "<absolute>";
+	};
+	4AFF43D811E3D430007A6E6E /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 4AFF43D911E3D430007A6E6E /* CTTelephonyNetworkInfo.h */;
+		name = "CTTelephonyNetworkInfo.h: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 1270;
+		vrLoc = 0;
+	};
+	4AFF43D911E3D430007A6E6E /* CTTelephonyNetworkInfo.h */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.c.h;
+		name = CTTelephonyNetworkInfo.h;
+		path = /Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS4.0.sdk/System/Library/Frameworks/CoreTelephony.framework/Headers/CTTelephonyNetworkInfo.h;
+		sourceTree = "<absolute>";
+	};
+	4AFF43DB11E3D430007A6E6E /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 4AFF43DC11E3D430007A6E6E /* telephony.c */;
+		name = "telephony.c: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 1702;
+		vrLoc = 0;
+	};
+	4AFF43DC11E3D430007A6E6E /* telephony.c */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.c.c;
+		name = telephony.c;
+		path = /Users/valexa/Desktop/telephony.c;
+		sourceTree = "<absolute>";
+	};
+}

@@ -1,0 +1,1729 @@
+kCTSMSMessage
+<CTSMSMessage %p [%p]>{}
+ranges
+/SourceCache/CoreTelephonyFramework_Sim/CoreTelephony-360.18/Message/CTSMSMessage.c
+firstRange >= 0
+firstRange <= lastRange
+kCTSMSMessageReceivedNotification
+kCTSMSMessageReplaceReceivedNotification
+kCTSMSMessageSentNotification
+kCTSMSMessageSendErrorNotificiation
+kCTSMSMessageSendError
+kCTSMSMessageSendModemError
+kCTSMSSignificantChangeNotification
+kCTSMSDatabaseFullNotification
+kCTSMSDatabaseFull
+kCTSMSBinaryMessage
+CTSMSMessage
+CTSMSMessageGetDatagramRanges
+kCTUSSDSessionString
+kCTUSSDSessionStringNotification
+kCTCall
+kCTCallForwardedNotification
+kCTCallDeflectedNotification
+kCTCallBarredNotification
+CTCall
+<CTCall %p [%p]>{status = %d, uuid = %p, address = %p, externalID = %d, start = %g, end = %g}
+kCTCallStatusChangeNotification
+kCTCallIdentificationChangeNotification
+kCTCallIdentificationSuppressionRejectedNotification
+kCTCallForwardingActiveNotification
+kCTCallHistoryRecordAddNotification
+kCTCallHistorySignificantChangeNotification
+kCTCallStatus
+kCTCallSource
+kCTModemErrorCode
+kCTCallControlErrorCode
+kCTCallControlFailureNotification
+kCTCallCauseCodeNotification
+kCTUSSDSessionBeginNotification
+kCTUSSDSessionEndNotification
+kCTUSSDSessionErrorNotification
+kCTUSSDSessionTerminatedNotification
+kCTUSSDSessionStringIsOutgoing
+kCTUSSDSessionResponseRequested
+kCTUSSDSessionErrorCode
+kCTUSSDSessionErrorString
+kCTCallForwardingActiveUnconditional
+kCTEventEmergencyCallStatusChangeNotification
+kCTEmergencyCallStatus
+counter_out_all
+counter_in_all
+counter_out_lifetime
+counter_in_lifetime
+counter_last_reset
+SELECT ROWID, address, date, text, flags, replace, svc_center, group_id, association_id, height, UIFlags, version FROM message WHERE group_id == ? ORDER BY ROWID desc;
+SELECT ROWID, group_id, address FROM group_member WHERE group_id = ?;
+(no domain)
+Error saving SMS: %s/%d
+DELETE FROM message WHERE (((flags & (1 << 10)) == 0) AND (group_id == ?));
+SELECT msg_group.ROWID, msg_group.type, msg_group.newest_message, msg_group.unread_count FROM group_member JOIN msg_group ON phone_numbers_equal(group_member.address, ?) = 1 AND group_member.group_id = msg_group.ROWID AND msg_group.type = 0;
+DELETE FROM message WHERE ROWID IN (SELECT message.ROWID FROM group_member JOIN msg_group ON group_member.group_id = msg_group.rowid AND msg_group.type = 0 JOIN message on msg_group.ROWID = message.group_id WHERE ((1 == phone_numbers_equal(group_member.address, ?)) AND (message.flags & (1 << 10)) == 0));
+SELECT message.ROWID, message.address, message.date, message.text, message.flags, message.replace, message.svc_center, message.group_id, message.association_id, height, UIFlags, version FROM group_member JOIN msg_group ON group_member.group_id = msg_group.rowid AND msg_group.type = 0 JOIN message on msg_group.ROWID = message.group_id WHERE ((1 == phone_numbers_equal(group_member.address, ?)) AND (message.flags & (1 << 10)) == 0) ORDER BY message.ROWID ASC;
+DELETE FROM message;
+PRAGMA auto_vacuum = 1;
+CREATE TRIGGER %sinsert_newest_message AFTER INSERT ON message WHEN new.ROWID >= IFNULL((SELECT MAX(ROWID) FROM message WHERE message.group_id = new.group_id), 0) BEGIN UPDATE msg_group SET newest_message = new.ROWID WHERE ROWID = new.group_id; END;
+CREATE TRIGGER %sdelete_newest_message AFTER DELETE ON message WHEN old.ROWID = (SELECT newest_message FROM msg_group WHERE ROWID = old.group_id) BEGIN UPDATE msg_group SET newest_message = (SELECT ROWID FROM message WHERE group_id = old.group_id AND ROWID = (SELECT max(ROWID) FROM message WHERE group_id = old.group_id)) WHERE ROWID = old.group_id; END;
+CREATE INDEX %smessage_group_index ON message(group_id, ROWID);
+CREATE INDEX %smessage_flags_index ON message(flags);
+CREATE TRIGGER %sinsert_unread_message AFTER INSERT ON message WHEN NOT read(new.flags) BEGIN UPDATE msg_group SET unread_count = (SELECT unread_count FROM msg_group WHERE ROWID = new.group_id) + 1 WHERE ROWID = new.group_id; END;
+CREATE TRIGGER %smark_message_unread AFTER UPDATE ON message WHEN read(old.flags) AND NOT read(new.flags) BEGIN UPDATE msg_group SET unread_count = (SELECT unread_count FROM msg_group WHERE ROWID = new.group_id) + 1 WHERE ROWID = new.group_id; END;
+CREATE TRIGGER %smark_message_read AFTER UPDATE ON message WHEN NOT read(old.flags) AND read(new.flags) BEGIN UPDATE msg_group SET unread_count = (SELECT unread_count FROM msg_group WHERE ROWID = new.group_id) - 1 WHERE ROWID = new.group_id; END;
+CREATE TRIGGER %sdelete_message AFTER DELETE ON message WHEN NOT read(old.flags) BEGIN UPDATE msg_group SET unread_count = (SELECT unread_count FROM msg_group WHERE ROWID = old.group_id) - 1 WHERE ROWID = old.group_id; END;
+DELETE FROM message WHERE address != "CB [%u, %u, %u]" AND address LIKE "CB [%u, %u, %%]";
+SELECT COUNT() FROM message WHERE address == "CB [%u, %u, %u]" AND (((((flags >> 28) & 15) < %u) AND ((%u - ((flags >> 28) & 15)) > 8)) OR ((((flags >> 28) & 15) > %u) AND ((((flags >> 28) & 15) - %u) < 8)));
+DELETE FROM message WHERE address == "CB [<channel>, <code>, <location>]";
+SELECT MAX(ROWID) FROM message
+SELECT count(*) FROM msg_group WHERE unread_count > 0;
+SELECT SUM(unread_count) FROM msg_group;
+SELECT unread_count FROM msg_group WHERE ROWID == ?;
+SELECT COUNT() FROM message;
+/Library/SMS/
+sms-legacy.db
+SELECT ROWID, address, date, text, flags, replace, svc_center, group_id, association_id, height, UIFlags, version FROM message WHERE ROWID > ? AND (flags & (1 << 1)) == 0 AND NOT read(flags) ORDER BY date DESC;
+SELECT ROWID, address, date, text, flags, replace, svc_center, group_id, association_id, height, UIFlags, version FROM message WHERE date > ? AND NOT read(flags) ORDER BY date DESC;
+SELECT message.rowid, message.address, message.date, message.text, message.flags, message.replace, message.svc_center, message.group_id, message.association_id, height, UIFlags, version, msg_group.unread_count, msg_group.ROWID, msg_group.type FROM msg_group LEFT OUTER JOIN message ON msg_group.newest_message = message.ROWID;
+SELECT address FROM group_member WHERE 1 == contains_alpha_chars(address) AND 1 == phone_numbers_equal(address, ?);
+SELECT rowid, address, date, text, flags, replace, svc_center, group_id, association_id, height, UIFlags, version FROM message WHERE replace == %d AND address == "%@" ORDER BY date ASC;
+SELECT ROWID, address, date, text, flags, replace, svc_center, group_id, association_id, height, UIFlags, version FROM message WHERE ROWID IN (SELECT ROWID FROM message WHERE flags = ? UNION SELECT ROWID FROM message WHERE flags = ?) ORDER BY date ASC;
+SELECT msg_group.ROWID, msg_group.type, msg_group.newest_message, msg_group.unread_count FROM msg_group JOIN group_member on msg_group.ROWID = group_member.group_id WHERE 0 = msg_group.type AND 1 = phone_numbers_equal(group_member.address, ?);
+property number is %d; setting value %d
+CPRecordGetID(group) != -1
+/SourceCache/CoreTelephonyFramework_Sim/CoreTelephony-360.18/Shared/Database/CTSMSMessageStore.c
+phone_numbers_equal
+normalize_phone_number
+contains_alpha_chars
+read
+wrong number of arguments
+sms-migration-XXXXXX.db
+ATTACH DATABASE '%s' AS new;
+SELECT address,date,text,flags,replace,svc_center,0,0,0,0,0 FROM message;
+INSERT INTO new.message (address,date,text,flags,replace,svc_center,group_id,association_id,height,UIFlags,version) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 0, 0, 0)
+INSERT INTO new.msg_group (type, newest_message, unread_count) VALUES (?, ?, ?);
+INSERT INTO new.group_member (group_id, address) VALUES (?, ?);
+UPDATE new.msg_group SET newest_message = ?, unread_count = ? WHERE ROWID = ?;
+INSERT INTO new.message(ROWID,  address, date, text, flags, replace, svc_center, group_id, association_id, height, UIFlags, version) SELECT ROWID, address, date, text, flags, replace, svc_center, group_id, association_id, height, UIFlags, version FROM message;
+INSERT INTO new.msg_group(ROWID, type, newest_message, unread_count) SELECT ROWID, type, newest_message, unread_count FROM msg_group;
+INSERT INTO new.group_member(ROWID, group_id, address) SELECT ROWID, group_id, address FROM group_member;
+new.
+DROP INDEX message_group_index;
+CREATE INDEX message_group_index ON message(group_id, ROWID);
+DROP TRIGGER insert_newest_message;
+DROP TRIGGER delete_newest_message;
+message
+address
+date
+flags
+replace
+svc_center
+group_id
+association_id
+height
+UIFlags
+version
+msg_group
+type
+newest_message
+unread_count
+group_member
+_CTSMSMessageStoreAddMessage
+data_last_reset
+timer_last_reset
+/Library/CallHistory/
+call_history.db
+CREATE TABLE data (ROWID INTEGER PRIMARY KEY AUTOINCREMENT, pdp_ip INTEGER, bytes_rcvd REAL, bytes_sent REAL, bytes_last_rcvd REAL , bytes_last_sent REAL , bytes_lifetime_rcvd REAL, bytes_lifetime_sent REAL);
+INSERT INTO data (pdp_ip, bytes_rcvd, bytes_sent, bytes_last_rcvd, bytes_last_sent, bytes_lifetime_rcvd, bytes_lifetime_sent) VALUES (?, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+data_up_all
+data_down_all
+data_up_last
+data_down_last
+data_up_lifetime
+data_down_lifetime
+UPDATE data SET bytes_rcvd = %f, bytes_sent = %f, bytes_last_rcvd =%f , bytes_last_sent =%f, bytes_lifetime_rcvd = %f, bytes_lifetime_sent = %f  WHERE pdp_ip = 0 
+ALTER TABLE call ADD COLUMN name TEXT;
+ALTER TABLE call ADD COLUMN country_code TEXT;
+call_history_limit
+CREATE INDEX date_index on call(date);
+timer_last
+timer_outgoing
+timer_incoming
+timer_all
+timer_lifetime
+UPDATE data SET bytes_sent = 0.0,  bytes_last_sent = 0.0 WHERE pdp_ip = ? 
+UPDATE data SET bytes_rcvd = 0.0, bytes_last_rcvd = 0.0 WHERE pdp_ip = ? 
+SELECT ROWID,pdp_ip,bytes_rcvd,bytes_sent FROM data WHERE pdp_ip = %d;
+SELECT ROWID,pdp_ip,bytes_last_rcvd,bytes_last_sent FROM data WHERE pdp_ip = %d;
+SELECT ROWID,pdp_ip,bytes_lifetime_rcvd,bytes_lifetime_sent FROM data WHERE pdp_ip = %d;
+UPDATE data SET bytes_sent = bytes_sent + ? , bytes_last_sent = ?,  bytes_lifetime_sent = bytes_lifetime_sent + ? WHERE pdp_ip = ? 
+UPDATE data SET bytes_rcvd = bytes_rcvd + ? , bytes_last_rcvd = ?, bytes_lifetime_rcvd = bytes_lifetime_rcvd + ? WHERE pdp_ip = ? 
+DELETE FROM call WHERE date < ?;
+DELETE FROM call;
+SELECT MAX(ROWID) FROM call
+SELECT COUNT() FROM call
+DELETE FROM call WHERE ROWID IN (SELECT ROWID FROM call ORDER BY date ASC LIMIT ?);
+SELECT COUNT(*) FROM call WHERE date > ? AND date <= ? AND (flags & (1 << 0) == 0) AND duration == 0 ORDER BY date DESC;
+SELECT ROWID, address, date, duration, flags, id, name, country_code FROM call WHERE date > ? AND date <= ? AND (flags & (1 << 0) == 0) AND duration == 0 ORDER BY date DESC;
+SELECT COUNT(*) FROM call WHERE date <= ? AND (flags & (1 << 0) == 0) AND duration == 0 ORDER BY date DESC;
+SELECT ROWID, address, date, duration, flags, id, name, country_code FROM call WHERE date <= ? AND (flags & (1 << 0) == 0) AND duration == 0 ORDER BY date DESC;
+SELECT ROWID, address, date, duration, flags, id, name, country_code FROM call WHERE date > ? ORDER BY date DESC;
+SELECT ROWID, address, date, duration, flags, id, name, country_code FROM call ORDER BY date DESC;
+SELECT ROWID, address, date, duration, flags, id, name, country_code FROM call WHERE ((flags & (1 << 0)) == ?) AND date > ? ORDER BY date DESC;
+SELECT ROWID, address, date, duration, flags, id, name, country_code FROM call WHERE ((flags & (1 << 0)) == ?) ORDER BY date DESC;
+SELECT ROWID, address, date, duration, flags, id, name, country_code FROM call WHERE ROWID > ? AND (flags & (1 << 0) == 0) AND duration == 0 ORDER BY date DESC;
+Error saving call history: %s/%d
+name
+country_code
+pdp_ip
+bytes_rcvd
+bytes_sent
+bytes_last_rcvd
+bytes_last_sent
+bytes_lifetime_rcvd
+bytes_lifetime_sent
+CREATE TRIGGER timer_last_trigger INSERT ON call WHEN (NEW.duration != 0) BEGIN UPDATE _SqliteDatabaseProperties SET value = (((NEW.duration + 59)/60)*60) WHERE key = 'timer_last'; END;
+CREATE TRIGGER timer_outgoing_trigger INSERT ON call WHEN (NEW.flags & (1 << 0) == 1) BEGIN UPDATE _SqliteDatabaseProperties SET value = (((((SELECT NEW.duration)+59)/60)*60) + (SELECT value FROM _SqliteDatabaseProperties WHERE key = 'timer_outgoing')) WHERE key = 'timer_outgoing'; END;
+CREATE TRIGGER timer_incoming_trigger INSERT ON call WHEN (NEW.flags & (1 << 0) == 0) BEGIN UPDATE _SqliteDatabaseProperties SET value = (((((SELECT NEW.duration)+59)/60)*60) + (SELECT value FROM _SqliteDatabaseProperties WHERE key = 'timer_incoming')) WHERE key = 'timer_incoming'; END;
+CREATE TRIGGER timer_all_trigger INSERT ON call WHEN (NEW.duration != 0) BEGIN UPDATE _SqliteDatabaseProperties SET value = (((((SELECT NEW.duration) + 59)/60)*60) + (SELECT value FROM _SqliteDatabaseProperties WHERE key = 'timer_all')) WHERE key = 'timer_all'; END;
+CREATE TRIGGER timer_lifetime_trigger INSERT ON call WHEN (NEW.duration != 0) BEGIN UPDATE _SqliteDatabaseProperties SET value = (((((SELECT NEW.duration) + 59)/60)*60) + (SELECT value FROM _SqliteDatabaseProperties WHERE key = 'timer_lifetime')) WHERE key = 'timer_lifetime'; END;
+DROP TRIGGER timer_last_trigger
+DROP TRIGGER timer_outgoing_trigger
+DROP TRIGGER timer_incoming_trigger
+DROP TRIGGER timer_all_trigger
+DROP TRIGGER timer_lifetime_trigger
+call
+data
+CREATE TRIGGER data_up_trigger UPDATE ON _SqliteDatabaseProperties WHEN (NEW.key = 'data_up_last') BEGIN UPDATE _SqliteDatabaseProperties SET value = (SELECT NEW.value + (SELECT value FROM _SqliteDatabaseProperties WHERE key = 'data_up_all')) WHERE key = 'data_up_all'; UPDATE _SqliteDatabaseProperties SET value = (SELECT NEW.value + (SELECT value FROM _SqliteDatabaseProperties WHERE key = 'data_up_lifetime')) WHERE key = 'data_up_lifetime'; END;
+CREATE TRIGGER data_down_trigger UPDATE ON _SqliteDatabaseProperties WHEN (NEW.key = 'data_down_last') BEGIN UPDATE _SqliteDatabaseProperties SET value = (SELECT NEW.value + (SELECT value FROM _SqliteDatabaseProperties WHERE key = 'data_down_all')) WHERE key = 'data_down_all'; UPDATE _SqliteDatabaseProperties SET value = (SELECT NEW.value + (SELECT value FROM _SqliteDatabaseProperties WHERE key = 'data_down_lifetime')) WHERE key = 'data_down_lifetime'; END;
+%s-CTTelephonyCenter
+SignificantTimeChangeNotification
+<CTTelephonyCenter %p [%p]>{}
+kCTTelephonyCenterDaemonRestartNotification
+CTTelephonyCenter
+kCTIndicatorsUnconditionalCallForwarding
+kCTIndicatorsVoiceMailAvailable
+kCTIndicatorsBatteryCapacity
+kCTIndicatorsSignalStrength
+kCTIndicatorsSignalStrengthNotification
+kCTIndicatorsGradedSignalStrength
+kCTIndicatorsRawSignalStrength
+kCTIndicatorsBatteryCapacityNotification
+kCTIndicatorsVoiceMailNotification
+kCTIndicatorsVoiceMailCount
+kCTIndicatorsVoiceMailURL
+kCTIndicatorsVoiceMailIsMWI
+kCTIndicatorsVoiceMailIsNetworkOriginated
+kCTIndicatorsUnconditionalCallForwardingNotification
+kCTIndicatorsTimeUpdateNotification
+kCTIndicatorsTimeUpdateAbsoluteTime
+kCTIndicatorsTimeUpdateTimeZoneOffset
+kCTIndicatorRadioTransmitNotification
+kCTRadioTransmitDCHStatus
+kCTRadioTransmitUTBFStatus
+kCTIndicatorsDstUpdateNotification
+kCTIndicatorsDstUpdateDstIsInEffect
+FakeSecondaryDns
+FakePrimaryDns
+IMSIOverride
+Modem
+kCTSettingType
+kCTSettingTypeCallWaiting
+kCTSettingEnabled
+kCTSettingCallClass
+kCTSettingTypeCallForwarding
+kCTSettingCallForwardingNoReplyTime
+kCTSettingCallForwardingNumber
+kCTSettingCallForwardingReason
+kCTSettingTypeCallBarring
+kCTSettingPassword
+kCTSettingCallBarringFacility
+kCTSettingTypeFixedDialing
+kCTSettingTypeCallingLineIdRestriction
+kCTSettingCallingLineIdRestriction
+kCTSettingTypeSIMLock
+kCTSettingTypeServiceCenterAddress
+kCTSettingServiceCenterAddress
+kCTSettingTypePIN
+kCTSettingNewPassword
+kCTSettingTypePIN2
+kCTSettingMyPhoneNumber
+kCTSettingMyPhoneNumberEditable
+kCTSettingMyPhoneNumberExists
+kCTSettingTypeConnectedLinePresentation
+kCTSettingTypeCallingLinePresentation
+kCTSettingTypeConnectedLineIdRestriction
+kCTSettingTypeCallingNamePresentation
+kCTSettingPINErrorCode
+kCTSettingPINErrorCodeAsString
+kCTSettingPIN2ErrorCode
+kCTSettingPIN2ErrorCodeAsString
+kCTSettingTypeSupplementaryServicePassword
+kCTSettingCallClassVoice
+kCTSettingCallClassData
+kCTSettingCallClassFax
+kCTSettingCallClassShortMessageSerice
+kCTSettingCallClassDataCircuitSync
+kCTSettingCallClassDataCircuitAsync
+kCTSettingCallClassPacketAccess
+kCTSettingCallClassPADAccess
+kCTSettingCallForwardingReasonUnconditional
+kCTSettingCallForwardingReasonMobileBusy
+kCTSettingCallForwardingReasonNoReply
+kCTSettingCallForwardingReasonNotReachable
+kCTSettingCallForwardingReasonAll
+kCTSettingCallForwardingReasonAllConditional
+kCTSettingCallBarringFacilityAllOutgoing
+kCTSettingCallBarringFacilityAllIncoming
+kCTSettingCallBarringFacilityOutgoingInternational
+kCTSettingCallBarringFacilityOutgoingInternationalExceptHomeCountry
+kCTSettingCallBarringFacilityIncomingWhileRoamingOutsideHomeCountry
+kCTSettingCallBarringFacilityIncomingNotOnSim
+kCTSettingCallBarringFacilityAllServices
+kCTSettingCallBarringFacilityAllOutgoingServices
+kCTSettingCallBarringFacilityAllIncomingServices
+kCTSettingConnectedLinePresentationDisabled
+kCTSettingConnectedLinePresentationEnabled
+kCTSettingConnectedLinePresentationNotAvailable
+kCTSettingConnectedLinePresentationUnknown
+kCTSettingConnectedLinePresentation
+kCTSettingCallingLinePresentationDisabled
+kCTSettingCallingLinePresentationEnabled
+kCTSettingCallingLinePresentationNotAvailable
+kCTSettingCallingLinePresentationUnknown
+kCTSettingCallingLinePresentation
+kCTSettingConnectedLineIdRestrictionNotAvailable
+kCTSettingConnectedLineIdRestrictionAvailable
+kCTSettingConnectedLineIdRestrictionUnknown
+kCTSettingConnectedLineIdRestriction
+kCTSettingCallingLineIdRestrictionModifiable
+kCTSettingCallingLineIdRestrictionNotModifiable
+kCTSettingCallingLineIdRestrictionModification
+kCTSettingCallingLineIdRestrictionDisabled
+kCTSettingCallingLineIdRestrictionEnabled
+kCTSettingCallingLineIdRestrictionNetworkControlled
+kCTSettingCallingLineIdRestrictionNotAvailable
+kCTSettingCallingLineIdRestrictionUnknown
+kCTSettingCallingLineIdRestrictionTemporarilyEnabled
+kCTSettingCallingLineIdRestrictionTemporarilyDisabled
+kCTSettingCallingNamePresentation
+kCTSettingCallingNamePresentationDisabled
+kCTSettingCallingNamePresentationEnabled
+kCTSettingCallingNamePresentationUnknown
+kCTSettingSupplementaryServiceType
+kCTSettingRequestSuccessNotification
+kCTSettingRequestErrorNotification
+kCTSettingSaveSuccessNotification
+kCTSettingSaveErrorNotification
+kCTSettingMMIProcedureActivation
+kCTSettingMMIProcedureDeactivation
+kCTSettingMMIProcedureInterrogation
+kCTSettingMMIProcedureRegistration
+kCTSettingMMIProcedureErasure
+kCTSettingMMIProcedure
+kCTCallWaitingSettingAvailableNotification
+kCTCallWaitingSettingSavedNotification
+kCTCallWaitingSettingReqeustErrorNotification
+kCTCallWaitingSettingSaveErrorNotification
+kCTCallForwardingSettingAvailableNotification
+kCTCallForwardingSettingSavedNotification
+kCTCallForwardingSettingReqeustErrorNotification
+kCTCallForwardingSettingSaveErrorNotification
+kCTCallBarringSettingAvailableNotification
+kCTCallBarringSettingSavedNotification
+kCTCallBarringSettingReqeustErrorNotification
+kCTCallBarringSettingSaveErrorNotification
+kCTFixedDialingSettingAvailableNotification
+kCTFixedDialingSettingSavedNotification
+kCTFixedDialingSettingReqeustErrorNotification
+kCTFixedDialingSettingSaveErrorNotification
+kCTConnectedLinePresentationSettingAvailableNotification
+kCTConnectedLinePresentationSettingReqeustErrorNotification
+kCTCallingLinePresentationSettingAvailableNotification
+kCTCallingLinePresentationSettingReqeustErrorNotification
+kCTConnectedLineIdRestrictionSettingAvailableNotification
+kCTConnectedLineIdRestrictionSettingReqeustErrorNotification
+kCTCallingLineIdRestrictionSettingAvailableNotification
+kCTCallingLineIdRestrictionSettingSavedNotification
+kCTCallingLineIdRestrictionSettingReqeustErrorNotification
+kCTCallingLineIdRestrictionSettingSaveErrorNotification
+kCTSettingServiceCenterAddressAvailableNotification
+kCTSettingServiceCenterAddressSavedNotification
+kCTSettingServiceCenterAddressRequestErrorNotification
+kCTSettingServiceCenterAddressSaveErrorNotification
+kCTSettingPhoneNumberChangedNotification
+kCTSIMSupportSIMNewInsertionNotification
+kCTSIMSupportSIMInsertionNotification
+kCTSIMSupportSIMStatusChangeNotification
+kCTSIMSupportSIMPINEntryErrorNotification
+kCTSIMSupportSIMPUKEntryErrorNotification
+kCTSIMSupportSIMNetworkPersonalizationTicketErrorNotification
+kCTSIMSupportSIMNetworkPersonalizationErrorNotification
+kCTSIMSupportSIMNetworkPersonalizationUnlockedNotification
+kCTSIMSupportMobileSubscriberIdentity
+kCTSIMSupportIntegratedCircuitCardIdentity
+kCTSIMSupportSIMStatusNotInserted
+kCTSIMSupportSIMStatusPINLocked
+kCTSIMSupportSIMStatusPUKLocked
+kCTSIMSupportSIMStatusNetworkLocked
+kCTSIMSupportSIMStatusCorporateLocked
+kCTSIMSupportSIMStatusOperatorLocked
+kCTSIMSupportSIMStatusOperatorSubsetLocked
+kCTSIMSupportSIMStatusServiceProviderLocked
+kCTSIMSupportSIMStatusReady
+kCTSIMSupportSIMStatusMemoryFailure
+kCTSIMSupportSIMStatusFixedDialingLocked
+kCTSIMSupportSIMStatusNotReady
+kCTSIMSupportSIMStatusBlacklisted
+kCTSIMSupportSIMStatus
+kCTSIMSupportSIMPINEntryAttemptsRemainingCount
+kCTSIMSupportSIMPUKEntryAttemptsRemainingCount
+kCTSIMSupportSIMAuthenticationInfoNotification
+kCTSIMSupportSIMAuthenticationFailedNotification
+kCTSimSupportSIMAuthenticationRes
+kCTSimSupportSIMAuthenticationKc
+kCTRegistrationDataContextID
+kCTRegistrationDataActivationWasForMMS
+kCTRegistrationDataActive
+kCTRegistrationDataStatusAttachedAndActive
+kCTRegistrationDataStatus
+kCTRegistrationDataAttached
+kCTRegistrationDataStatusAttached
+kCTRegistrationDataStatusUnattached
+kCTRegistrationDataIndicatorNone
+kCTRegistrationDataIndicator
+Carriers
+com.apple.coretelephony
+kCTRegistrationNetworkList
+kCTRegistrationStatusUnknown
+kCTRegistrationStatus
+kCTRegistrationStatusNotRegistered
+kCTRegistrationStatusSearching
+kCTRegistrationStatusDenied
+kCTRegistrationStatusRegisteredHome
+kCTRegistrationStatusRegisteredRoaming
+kCTRegistrationStatusEmergencyOnly
+kCTRegistrationCauseCode
+kCTRegistrationOperatorName
+kCTRegistrationAbbreviatedOperatorName
+kCTRegistrationServiceProviderName
+kCTRegistrationNetworkName
+kCTRegistrationNetworkCode
+kCTRegistrationRadioAccessTechnology
+kCTRegistrationNetworkSelectionMode
+kCTRegistrationNetworkSelectionModeAutomatic
+kCTRegistrationNetworkSelectionModeManual
+kCTRegistrationNetworkSelectionModeDisabled
+kCTRegistrationDataConnectionServices
+kCTRegistrationDataActivateFailure
+kCTRegistrationDataActivateFailureString
+kCTRegistrationCellChangedNotification
+kCTRegistrationLac
+kCTRegistrationCellId
+kCTRegistrationInHomeCountry
+kCTRegistrationServiceProviderNameChangedNotification
+kCTRegistrationOperatorNameChangedNotification
+kCTRegistrationStatusChangedNotification
+kCTRegistrationCauseCodeNotification
+kCTRegistrationNetworkListAvailableNotification
+kCTRegistrationNetworkListFailedNotification
+kCTRegistrationNetworkSelectedNotification
+kCTRegistrationNetworkSelectFailedNotification
+kCTRegistrationNetworkReselectNotification
+kCTRegistrationDataStatusChangedNotification
+kCTRegistrationNewServingNetworkNotification
+kCTRegistrationDataActivateFailedNotification
+kCTRegistrationDataActivationPreventionReason
+kCTRegistrationDataActivationPreventionReasonOff
+kCTRegistrationDataActivationPreventionReasonIntlRoamingOff
+kCTRegistrationDataActivationPreventionNotSupported
+kCTRegistrationCustomerServiceProfileUpdateNotification
+kCTRegistrationNetworkSelectionMenu
+kCTRegistrationDataIndicator2G
+kCTRegistrationDataIndicator2_5G
+kCTRegistrationDataIndicator3G
+kCTRegistrationDataIndicator3_5G
+kCTRegistrationDataIndicator3_75G
+kCTRegistrationDataIndicator4G
+kCTRegistrationDataIndicator5G
+kCTRegistrationDataIndicator6G
+kCTRegistrationDataIndicator7G
+kCTRegistrationDataIndicator8G
+kCTRegistrationDataIndicator9G
+kCTRegistrationRadioAccessTechnologyGSM
+kCTRegistrationRadioAccessTechnologyGSMCompact
+kCTRegistrationRadioAccessTechnologyUTRAN
+kCTRegistrationRadioAccessTechnologyUnknown
+kCTRegistrationDataStatusInternationalRoaming
+kCTRegistrationStateDurationReportNotification
+kCTRegistrationBasebandStateNull
+kCTRegistrationBasebandStateInactive
+kCTRegistrationBasebandStateIdle
+kCTRegistrationBasebandStateIdleCCCH
+kCTRegistrationBasebandStateCellURA
+kCTRegistrationBasebandStateCellFACH
+kCTRegistrationBasebandStateCellDCH
+kCTRegistrationBasebandStatePLMNSearch
+kCTRegistrationBasebandStatePLMNSelection
+kCTRegistrationBasebandStateReselection
+kCTRegistrationBasebandStateSIB16
+kCTRegistrationBasebandStateSIBChange
+kCTRegistrationBasebandStateOOSCellSearch
+kCTRegistrationCellularDataPlanActivateFailedNotification
+kCTRegistrationCellularDataPlanAccountURL
+kCTRegistrationCellularDataPlanNewAccount
+kCTAudioVoiceMuteStatusNotification
+kCTAudioVoiceMuteStatus
+kCTAudioTTYModeStatusNotification
+kCTAudioTTYModeStatus
+kCTAudioCallDropToneCompleteNotification
+kCTReturnUnknownError
+kCTVVMNumberTypeKey
+kCTVVMNumberKey
+kCTVVMPilotNumber
+kCTVVMRoamingPilotNumber
+kCTVVMSIM
+kCTVVMUnknown
+kCTSimSupportSIMAuthenticationSres
+kCTkCTSimSupportSIMAuthenticationKc
+unavailable
+Error copying carrier settings:%d/%d
+Application terminated call!
+CTServerConnectionGetPhonebookEntry failed %s
+kCTRadioModuleBandGSM850
+kCTRadioModuleBandGSM900
+kCTRadioModuleBandGSM1800
+kCTRadioModuleBandGSM1900
+kCTRegistrationRATSelectionUnknown
+kCTRegistrationRATSelection0
+kCTRegistrationRATSelection1
+kCTRegistrationRATSelection2
+CommCenter couldn't accept this activation ticket
+/SourceCache/CoreTelephonyFramework_Sim/CoreTelephony-360.18/ServerConnection/CTServerConnection.c
+kCTIndicatorsTemperatureChangeNotification
+kCTIndicatorsTemperatureThresholdNotification
+kCTCellularDataPlanStatusNotification
+kCTRadioModuleBandActive
+kCTRadioModuleBandSupported
+Sending response to port %d failed (%x).
+<CTServerConnection %p [%p]>{server=%x, info=%p}
+kCTSMSClass0String
+kCTSMSClass0AddressString
+kCTSMSClass0StringReceivedNotification
+kCTIndicatorsTemperatureSensorId
+kCTIndicatorsTemperature
+kCTIndicatorsTemperatureRaw
+Malformed property list data could not be re-formed into a dictionary: %s
+Malformed property list data could not be re-formed into a dictionary: <none>
+Network notification dictionary contains too many key/value pairs: %d
+Malformed property list data could not be re-formed into a dictionary: (none)
+com.apple.commcenter
+kCTDaemonReadyNotification
+kCTLogsStopProcessing
+kCTLogsStartProcessing
+kCTRadioModuleBandChangeNotification
+kCTNoError
+kCTUnknownError
+kCTErrorRadioFailure
+kCTErrorNetworkFailure
+kCTErrorCongestion
+kCTErrorUnidentifiedSubscriber
+kCTErrorFacilityRejected
+kCTErrorUnknownSubscriber
+kCTErrorNetworkOutOfOrder
+kCTErrorInvalidTransactionIdentifier
+kCTErrorSemanticallyIncorrectMessage
+kCTErrorInvalidMandatoryInformation
+kCTErrorMessageTypeNonExistant
+kCTErrorMessageNotCompatibleWithProtocolState
+kCTErrorInformationElementNonExistant
+kCTErrorProtocolErrorUnspecified
+kCTErrorTemporaryFailure
+kCTErrorResourcesUnavailable
+kCTErrorRequestedFacilityNotSubscribed
+kCTErrorRequestedFacilityNotImplemented
+kCTErrorInterworkingError
+kCTErrorInterworkingNotSupported
+kCTErrorCommandCannotBeActioned
+kCTErrorNoNetworkService
+kCTErrorUnassignedNumber
+kCTErrorOperatorDeterminedBarring
+kCTErrorCallBarred
+kCTErrorUserBusy
+kCTErrorNoUserResponding
+kCTErrorNumberChanged
+kCTErrorInvalidNumberFormat
+kCTErrorCallRejected
+kCTErrorSimNotInserted
+kCTErrorSimPinRequired
+kCTErrorSimPukRequired
+kCTErrorSimFailure
+kCTErrorSimMemoryFailure
+kCTBadPinFormatError
+kCTErrorNumberNotAllowed
+kCTErrorIncorrectPassword
+kCTErrorShortMessageTransferRejected
+kCTErrorDestinationOutOfOrder
+kCTErrorClass0NotSupported
+kCTErrorCannotReplaceSm
+kCTErrorUnspecifiedPid
+kCTErrorDataCodingSchemeNotSupported
+kCTErrorUnspecifiedDcs
+kCTErrorCommandUnsupported
+kCTErrorUnspecifiedTpCommand
+kCTErrorTpduNotSupported
+kCTErrorScBusy
+kCTErrorRejectedBySimSmsControl
+kCTErrorGprsIllegalMs
+kCTErrorGprsIllegalMe
+kCTErrorGprsServicesNotAllowed
+kCTErrorGprsPlmnNotAllowed
+kCTErrorGprsLocationAreaNotAllowed
+kCTErrorGprsRoamingNotAllowedInLocationArea
+kCTErrorGprsMissingorUnknownAPN
+kCTErrorGprsServiceOptionNotSupported
+kCTErrorGprsServiceOptionNotSubscribed
+kCTErrorGprsServiceOptionTemporarilyOutOfOrder
+kCTErrorGprsPdpAuthenticationFailure
+kCTErrorGprsInvalidMobileClass
+kCTErrorGprsUnspecified
+kCTErrorGprsPDPAuthenticationInfoRejectedByBaseband
+_CTServerConnectionIssueActivationTicket
+CTServerConnection
+kCTPowerRadioModuleOffErrorNotification
+kCTPowerRadioModuleNotReadyErrorNotification
+kCTPowerRadioModuleResetNotification
+kCTPowerRadioModuleDeadNotification
+kCTPowerAirplaneModeNotification
+kCTPowerAirplaneMode
+kCTPhoneBookSelectedNotification
+kCTPhoneBookFetchNotification
+kCTPhoneBookWriteNotification
+kCTPhoneBookErrorNotification
+timestamp-
+token-
+VMStoreRecordChangedFlagsFromServer
+VMStoreRecordFlagsWIllChange
+VMStoreRecordChangedFlags
+VMStoreRecordFlagsDidChange
+VMStoreRecordFlagsChanged
+uid_validity
+SELECT ROWID, remote_uid, date, token, sender, callback_num, duration, expiration, trashed_date, flags FROM voicemail WHERE remote_uid = ? AND (flags & ?) = ? ORDER BY ROWID ASC;
+SELECT remote_uid FROM voicemail WHERE (flags & ?) = ? ORDER BY remote_uid ASC;
+SELECT remote_uid, rowid FROM voicemail ORDER BY remote_uid ASC;
+%s%s%d.amr
+/Library/Voicemail/
+DELETING FILE %s
+com.apple.voicemail.changed
+Greeting.amr
+voicemail.db
+.amr
+token
+VMVersion
+Voicemail database has correct version, migration is a no-op
+Voicemail database has incorrect schema, don't know what to do.
+CREATE INDEX date_index on voicemail(date);
+CREATE INDEX remote_uid_index on voicemail(remote_uid);
+FilesCleaned
+%s%s%s
+%s%d.amr
+Couldn't write voicemail data for id %d (%ld)
+mailboxusage
+SELECT ROWID, remote_uid, date, token, sender, callback_num, duration, expiration, trashed_date, flags FROM voicemail WHERE (flags & ?) = ? ORDER BY date DESC, remote_uid DESC;
+CLEANING BACKING FILES
+SELECT rowid FROM voicemail;
+SELECT ROWID, remote_uid, date, token, sender, callback_num, duration, expiration, trashed_date, flags FROM voicemail WHERE (flags & ?) = ? AND remote_uid >= ? AND remote_uid <= ? ORDER BY remote_uid;
+SELECT ROWID, remote_uid, date, token, sender, callback_num, duration, expiration, trashed_date, flags FROM voicemail WHERE (flags & 13) = 0 AND ROWID > ? ORDER BY date DESC
+SELECT MAX(ROWID) FROM voicemail
+token-%
+VMStoreRemovedAllRecords
+SELECT COUNT(*) FROM voicemail WHERE ((flags & ?) = ?);
+VMStoreRemovedRecords
+voicemail
+remote_uid
+sender
+callback_num
+duration
+expiration
+trashed_date
+kCTSIMToolkitSession
+kCTSIMToolkitText
+kCTSIMToolkitIcon
+kCTSIMToolkitTimeout
+kCTSIMToolkitHelpAvailable
+kCTSIMToolkitNoDisplay
+kCFSIMToolkitNextActionSetUpCall
+kCFSIMToolkitNextActionSendSS
+kCFSIMToolkitNextActionSendUSSD
+kCFSIMToolkitNextActionSendSMS
+kCFSIMToolkitNextActionLaunchBrowser
+kCFSIMToolkitNextActionPlayTone
+kCFSIMToolkitNextActionDisplayText
+kCFSIMToolkitNextActionGetInput
+kCFSIMToolkitNextActionDisplayList
+kCFSIMToolkitNextActionOther
+kCFSIMToolkitNextAction
+kCTSIMToolkitMenuItems
+kCTSIMToolkitDisplayTextPriority
+kCTSIMToolkitDisplayTextPriorityNormal
+kCTSIMToolkitDisplayTextPriorityHigh
+kCTSIMToolkitDisplayTextOrderOutBehavior
+kCTSIMToolkitDisplayTextOrderOutBehaviorClose
+kCTSIMToolkitDisplayTextOrderOutBehaviorSendOK
+kCTSIMToolkitDisplayTextTerminalDelay
+kCTSIMToolkitDisplayTextTerminalDelayEnabled
+kCTSIMToolkitDisplayTextTerminalDelayDisabled
+kCTSIMToolkitDisplayTextNotification
+kCTSIMToolkitGetInputDefaultText
+kCTSIMToolkitGetInputMinimumLength
+kCTSIMToolkitGetInputMaximumLength
+kCTSIMToolkitGetInputIsEditable
+kCTSIMToolkitGetInputIsSecret
+kCTSIMToolkitGetInputTypeDigits
+kCTSIMToolkitGetInputTypeBoolean
+kCTSIMToolkitGetInputTypeString
+kCTSIMToolkitGetInputType
+kCTSIMToolkitGetInputNotification
+kCTSIMToolkitPlayToneDial
+kCTSIMToolkitPlayToneBusy
+kCTSIMToolkitPlayToneCongestion
+kCTSIMToolkitPlayToneRadioPathAck
+kCTSIMToolkitPlayToneCallDropped
+kCTSIMToolkitPlayToneError
+kCTSIMToolkitPlayToneCallWaiting
+kCTSIMToolkitPlayToneRinging
+kCTSIMToolkitPlayToneGeneralBeep
+kCTSIMToolkitPlayTonePositiveAck
+kCTSIMToolkitPlayToneNegativeAck
+kCTSIMToolkitPlayToneUserRing
+kCTSIMToolkitPlayToneSMS
+kCTSIMToolkitPlayTone
+kCTSIMToolkitPlayToneDuration
+kCTSIMToolkitPlayToneNotification
+kCFSIMToolkitDisplayListItemSelected
+kCTSIMToolkitDisplayListStyle
+kCTSIMToolkitDisplayListStyleMenu
+kCTSIMToolkitDisplayListStylePicker
+kCTSIMToolkitDisplayListCount
+kCTSIMToolkitDisplayListNotification
+kCTSIMToolkitSentSMSMessageNotification
+kCTSIMToolkitSentSSString
+kCTSIMToolkitSentSSNotification
+kCTSIMToolkitSentUSSDString
+kCTSIMToolkitSentUSSDNotification
+kCTSIMToolkitCallSetUpPhoneNumber
+kCTSIMToolkitCallSetUpPriorityLow
+kCTSIMToolkitCallSetUpPriorityMedium
+kCTSIMToolkitCallSetUpPriorityHigh
+kCTSIMToolkitCallSetUpPriority
+kCTSIMToolkitCallSetUpRedial
+kCTSIMToolkitCallSetUpInCallText
+kCTSIMToolkitCallSetUpInCallIcon
+kCTSIMToolkitCallSetUpNotification
+kCTSIMToolkitLocalInformationNotification
+kCTSIMToolkitIdleTextNotification
+kCTSIMToolkitSentDTMFNotification
+kCTSIMToolkitLanguage
+kCTSIMToolkitLanguageNotification
+kCTSIMToolkitControlCallNotification
+kCTSIMToolkitControlSSNotification
+kCTSIMToolkitControlUSSDNotification
+kCTSIMToolkitControlSMSMessageNotification
+kCTSIMToolkitControlAllowed
+kCTSIMToolkitControlRejected
+kCTSIMToolkitControlModified
+kCTSIMToolkitControlResult
+kCTSIMToolkitRequestUserAttentionNotification
+kCTSIMToolkitNotificationResponseSuccess
+kCTSIMToolkitNotificationResponseCancelled
+kCTSIMToolkitNotificationResponseBack
+kCTSIMToolkitNotificationResponseTimeout
+kCTSIMToolkitNotificationResponseHelp
+kCTSIMToolkitNotificationResponseBusy
+kCTSIMToolkitNotificationResponseRefused
+kCTSIMToolkitNotificationResponseNotSupported
+kCTSIMToolkitSessionCompleteNotification
+AaBbCcDdEe1234567890
+/AppleInternal/Library/PreferenceBundles/Internal Settings.bundle
+/AppleInternal/Library/PreferenceBundles/Carrier Settings.bundle
+%c%c
+/Library/Preferences/com.apple.commcenter.plist
+0123456789ABCDEF
+kCTCellMonitorUpdateNotification
+kCTCellTrackedNotification
+kCTCellTrackedMCC
+kCTCellTrackedMNC
+kCTCellTrackedLAC
+kCTCellTrackedCI
+<[CTMessageAddress: %@]
+[Recipients: %@]
+[Items: %@]
+[Raw Headers: %@]
+[Date: %@]
+[message ID: %d]
+[message Type: %d]
+[service center: %@]
+[subject: %@]
+[Content-type: %@]
+[Content-type params: %@]
+[replace message: %d]
+text/plain
+kCTMessageReceivedNotification
+kCTMessageReceiveDeferredNotification
+kCTMessageReplaceReceivedNotification
+kCTMessageSentNotification
+kCTMessageSendErrorNotification
+kCTMessageSendProgressNotification
+kCTMMSConfigurationChangeNotification
+kCTMessageIdKey
+kCTMessageSendErrorKey
+kCTMessageSendModemErrorKey
+kCTMessageSendBytesKey
+kCTMessageSendTotalBytesKey
+kCTMessageTypeKey
+kCTMMSConfiguredKey
+_sender
+@"NSObject<CTMessageAddress><NSCopying>"
+_recipients
+@"NSMutableArray"
+_items
+_rawHeaders
+@"NSDictionary"
+_date
+@"NSDate"
+_messageId
+_messageType
+_serviceCenter
+@"CTPhoneNumber"
+_subject
+_contentType
+_contentTypeParams
+@"NSMutableDictionary"
+_replaceMessage
+_countryCode
+@8@0:4
+setMessageId:
+v12@0:4I8
+messageId
+I8@0:4
+v12@0:4i8
+i8@0:4
+setServiceCenter:
+serviceCenter
+setSubject:
+subject
+setSender:
+rawHeaders
+countryCode
+setCountryCode:
+description
+allContentTypeParameterNames
+addContentTypeParameterWithName:value:
+v16@0:4@8@12
+addData:withContentType:
+@16@0:4@8@12
+addText:
+addEmailRecipient:
+addPhoneRecipient:
+setRawHeaders:
+initWithDate:
+init
+T@"NSString",R,C,N,V_countryCode
+replaceMessage
+TI,R,V_replaceMessage
+T@"NSString",C,N,V_contentType
+T@"NSDictionary",R,V_rawHeaders
+T@"NSObject<CTMessageAddress><NSCopying>",C,N,V_sender
+T@"NSString",C,N,V_subject
+T@"CTPhoneNumber",C,N,V_serviceCenter
+messageType
+Ti,N,V_messageType
+T@"NSArray",R,V_items
+TI,N,V_messageId
+T@"NSDate",R,V_date
+T@"NSArray",R,V_recipients
+CTMessage
+initWithFormat:
+encodedString
+allKeys
+setObject:forKey:
+objectForKey:
+initWithData:contentType:
+dataUsingEncoding:
+initWithAddress:
+initWithDigits:countryCode:
+rangeOfString:
+class
+retain
+copy
+release
+alloc
+/TYPE=PLMN
+com.apple.carrier
+ShortCodeNumberLength
+_digits
+_isShortCode
+digits
+setIsShortCode:
+isShortCode
+canonicalFormat
+formatForCallingCountry:
+@12@0:4^{_NSZone=}8
+numberOfDigitsForShortCodeNumber
+Tc,V_isShortCode
+T@"NSString",R,V_countryCode
+T@"NSString",R,V_digits
+CTPhoneNumber
+stringByAppendingString:
+compare:
+allocWithZone:
+initWithCharacters:length:
+characterAtIndex:
+respondsToSelector:
+integerValue
+CTMessageAddress
+NSCopying
+<unknown>
+vector::reserve
+vnd.wap.multipart.alternative
+application
+vnd.wap.multipart.mixed
+vnd.wap.multipart.related
+vector::_M_fill_insert
+application/vnd.wap.multipart.mixed
+application/vnd.wap.multipart.related
+html
+plain
+x-hdml
+x-ttml
+x-vCalendar
+x-vCard
+vnd.wap.wml
+vnd.wap.wmlscript
+vnd.wap.wta-event
+multipart
+mixed
+form-data
+byteranges
+alternative
+java-vm
+x-www-form-urlencoded
+x-hdmlc
+vnd.wap.wmlc
+vnd.wap.wmlscriptc
+vnd.wap.wta-eventc
+vnd.wap.uaprof
+vnd.wap.wtls-ca-certificate
+vnd.wap.wtls-user-certificate
+x-x509-ca-cert
+x-x509-user-cert
+image
+jpeg
+tiff
+vnd.wap.wbmp
+vnd.wap.multipart.*
+vnd.wap.multipart.form-data
+vnd.wap.multipart.byteranges
+vnd.wap.wbxml
+x-x968-cross-cert
+x-x968-ca-cert
+x-x968-user-cert
+vnd.wap.si
+vnd.wap.sic
+vnd.wap.sl
+vnd.wap.slc
+vnd.wap.co
+vnd.wap.coc
+vnd.wap.sia
+vnd.wap.connectivity-xml
+vnd.wap.connectivity-wbxml
+pkcs7-mime
+vnd.wap.hashed-certificate
+vnd.wap.signed-certificate
+vnd.wap.cert-response
+xhtml+xml
+wml+xml
+vnd.wap.mms-message
+vnd.wap.rollover-certificate
+vnd.wap.locc+wbxml
+vnd.wap.loc+xml
+vnd.syncml.dm+wbxml
+vnd.syncml.dm+xml
+vnd.syncml.notification
+vnd.wap.xhtml+xml
+vnd.wv.csp.cir
+vnd.oma.dd+xml
+vnd.oma.drm.message
+vnd.oma.drm.content
+vnd.oma.drm.rights+xml
+vnd.oma.drm.rights+wbxml
+content-type
+enum
+from
+unable to decode value length
+value length > remaining buffer
+unknown token in From header: %.2x
+<insert address>
+%s: [%s] %s
+%s: %s
+From
+Message-ID
+Subject
+X-Wap-Content-URI
+Accept
+Accept-Language
+Accept-Ranges
+Allow
+Authorization
+Connection
+Content-Base
+Content-Encoding
+Content-Language
+Content-Length
+Content-Location
+Content-MD5
+Content-Type
+Date
+Etag
+Expires
+Host
+If-Modified-Since
+If-Match
+If-None-Match
+If-Range
+If-Unmodified-Since
+Location
+Last-Modified
+Max-Forwards
+Pragma
+Proxy-Authenticate
+Proxy-Authorization
+Public
+Range
+Referer
+Retry-After
+Server
+Transfer-Encoding
+Upgrade
+User-Agent
+Vary
+Warning
+WWW-Authenticate
+Content-Disposition
+X-Wap-Application-Id
+X-Wap-Initiator-URI
+Accept-Application
+Bearer-Indication
+Push-Flag
+Profile
+Profile-Diff
+Profile-Warning
+Expect
+Trailer
+Accept-Charset
+Accept-Encoding
+Cache-Control
+Content-Range
+X-Wap-Tod
+Content-ID
+Set-Cookie
+Cookie
+Encoding-Version
+0x%.2X: %s
+0x%.2X: (not defined)
+integer
+Unknown
+%a %b %d %T %Y
+vector::_M_insert_aux
+Medium
+High
+Hide
+Show
+smil
+smil+xml
+application/smil
+-----------------------------
+Part %d (%u bytes):
+X-Mms-Attributes
+X-Mms-Content-Location
+X-Mms-Delivery-Report
+X-Mms-Delivery-Time
+X-Mms-Distribution-Indicator
+X-Mms-Element-Descriptor
+X-Mms-Message-Class
+X-Mms-MM-Flags
+X-Mms-MM-State
+X-Mms-Priority
+X-Mms-Quotas
+X-Mms-Read-Report
+X-Mms-Read-Status
+X-Mms-Reply-Charging
+X-Mms-Report-Allowed
+X-Mms-Response-Status
+X-Mms-Response-Text
+X-Mms-Retrieve-Status
+X-Mms-Retrieve-Text
+X-Mms-Sender-Visibility
+X-Mms-Status
+X-Mms-Store
+X-Mms-Stored
+X-Mms-Store-Status
+X-Mms-Store-Status-Text
+X-Mms-Totals
+X-Mms-Mbox-Totals
+X-Mms-Mbox-Quotas
+X-Mms-Transaction-ID
+X-Mms-Reply-Charging-ID
+X-Mms-Message-Count
+X-Mms-Start
+X-Mms-Limit
+X-Mms-Message-Size
+X-Mms-MMS-Version
+X-Mms-Previously-Sent-By
+X-Mms-Previously-Sent-Date
+X-Mms-Reply-Charging-Size
+X-Mms-Message-Type
+X-Mms-Expiry
+M-send-req
+M-send-conf
+M-notification-ind
+M-notifyresp-ind
+M-retrieve-conf
+M-acknowledge-ind
+M-delivery-ind
+M-read-rec-ind
+MMS 1.0
+MMS 1.1
+MMS 1.3
+Error-message-format-corrupt
+Error-transient-failure
+Error-transient-sending-address-unresolved
+Error-transient-message-not-found
+Error-transient-network-problem
+Error-transient-partial-success
+Error-permanent-failure
+Error-permanent-service-denied
+Error-permanent-message-format-corrupt
+Error-permanent-message-not-found
+Error-permanent-content-unsupported
+Expired
+Retrieved
+Rejected
+Deferred
+Unrecognized
+Indeterminate
+Forwarded
+MMS 1.2
+Using 0x2E for kMmsHeaderNameContentDisposition
+Using 0x45 for kMmsHeaderNameContentDisposition
+Old Version: [%s], new version: [%s]
+Version now: [%s]
+  Body: %s
+  ** no Content-Type header
+%.2hhx
+unable to convert from charset %s (%d) to %s (%d)
+text
+/tmp/
+_error_
+.mms
+writing mms data to %s
+%.2x 
+Message so far:
+Next few bytes: %s
+%s is not a valid content type
+couldn't decode contentType
+unknown header encoding 0x%.2x at byte %u
+unable to decode encoded header '%s'
+failed to decode simple header name
+unable to decode header '%s'
+%s: replaced simple header with %s header
+couldn't replace simple header '%s' with encoded version
+Couldn't decode headersLen for part %u
+Part %u
+HeadersLen = %u
+Couldn't decode dataLen for part %u
+DataLen = %u
+out of buffer before Content-Type for part %u
+Couldn't decode Content-Type for part %u
+bad_part_content_type
+HeadersLen %u > remaining %u
+bad_part_headers_len
+error decoding headers for part %u
+bad_part_headers
+DataLen %u > remaining %u
+bad_part_data_len
+Body:
+couldn't find best subpart for multipart/alternative part %u
+unable to decode nEntries for multipart message
+nEntries = %u
+found %u actual entries with nEntries = %u
+couldn't find a best part for multipart/alternative message
+contentType is %s, not multipart
+no Content-Type header, how can I decode the body?
+unable to decode multipart/alternative part %u
+No %s header in MMS PDU
+MmsPduDecoder: after decoding message, still have %d bytes remaining.
+file > 1MB
+unable to decode wap push: bodylen = %u
+unable to decode wap push: unknown PDU type %u
+unable to decode wap push: bad wspHeaderLen %u
+unable to decode wap push: bad content type starting with %x
+application/vnd.wap.mms-message
+Ignoring WAP push with content type [%s]
+unable to decode mms notification
+received mms notification
+()<>@,;:\"/[]?={} 
+unable to encode message type
+unable to encode transactionId
+unable to encode MMS version
+encoding failed for header '%s'
+simple
+text-string
+quoted-string
+encoded-string
+indexed-encoded-string
+messageType is unknown
+unable to encode message
+Failed to retrieve a deferred message
+Failed to retrieve message
+Retrieved a message with zero length
+decoded MMS is NULL
+decoded SMS is NULL
+sendSMS called with an MMS message
+no items in message
+sms must have exactly 1 recipient
+error sending message: %d
+unable to serialize sms
+queued messageId %u
+error sending message from data: %d
+couldn't get message %d, type %d (%s)
+sharedMessageCenter
+getCharacterCount:andMessageSplitThreshold:forSmsText:
+c20@0:4^i8^i12@16
+sendSMSWithText:serviceCenter:toAddress:
+c20@0:4@8@12@16
+isMmsConfigured
+isMmsEnabled
+decodeMessage:
+@12@0:4@8
+encodeMessage:
+statusOfOutgoingMessages
+deferredMessageWithId:
+@12@0:4I8
+incomingMessageWithId:
+acknowledgeOutgoingMessageWithId:
+acknowledgeIncomingMessageWithId:
+allIncomingMessages
+incomingMessageCount
+incomingMessageWithId:telephonyCenter:isDeferred:
+@20@0:4I8^{__CTTelephonyCenter=}12c16
+send:
+{?=ii}12@0:4@8
+sendMMS:
+sendMMSFromData:messageId:
+{?=ii}16@0:4@8I12
+sendSMS:
+CTMessageCenter
+phoneNumberWithDigits:countryCode:
+initWithMessageId:messageType:result:
+autorelease
+addObject:
+decodeMessageFromData:
+initWithBytesNoCopy:length:freeWhenDone:
+contentType
+setMessageType:
+caseInsensitiveCompare:
+objectAtIndex:
+items
+length
+encodeSms:
+count
+/System/Library/PrivateFrameworks/MIME.framework
+no message body
+no recipients
+AllowEmptySubject
+no content type specified for part %u
+part %u doesn't contain a body
+invalid content type %s for part %u
+ASCIIFileNameRequired
+encodeMessage failed
+unable to get recipient for SMS
+unable to get serviceCenter for SMS
+text part contains null text
+unable to convert value of header %s to a string
+%s/%s
+decodeSmsFromData:
+CTMmsEncoder
+addPart:
+setContentLocation:
+setContentId:
+setContentType:
+stringWithFormat:
+emailAddress:
+addRecipient:
+initWithBytes:length:encoding:
+contentLocation
+contentId
+contentTypeParameterWithName:
+countByEnumeratingWithState:objects:count:
+UTF8String
+recipients
+dataWithBytes:length:
+getCString:maxLength:encoding:
+setReplaceMessage:
+stringWithUTF8String:
+dateWithTimeIntervalSince1970:
+bytes
+initWithData:encoding:
+mf_encodedHeaderDataWithEncodingHint:
+mf_decodeMimeHeaderValueWithCharsetHint:
+load
+bundleWithPath:
+boolValue
+_contentId
+_contentLocation
+_data
+@"NSData"
+setData:
+T@"NSData",C,N,V_data
+T@"NSString",C,N,V_contentLocation
+T@"NSString",C,N,V_contentId
+CTMessagePart
+mms: 
+empty
+constrained
+mmflags
+add 
+remove 
+filter 
+remove
+filter
+_result
+result
+@20@0:4I8i12i16
+Ti,R,V_result
+Ti,R,V_messageType
+TI,R,V_messageId
+CTMessageStatus
+_address
+T@"NSString",R,V_address
+CTEmailAddress
+charset
+UNKNOWN
+utf-16
+us-ascii
+iso-8859-1
+iso-8859-2
+iso-8859-3
+iso-8859-4
+iso-8859-5
+iso-8859-6
+iso-8859-7
+iso-8859-8
+iso-8859-9
+iso-8859-10
+shift_jis
+euc-jp
+ks_c_5601-1987
+iso-2022-kr
+euc-kr
+iso-2022-jp
+iso-2022-jp-2
+jis_c6226-1983
+iso-2022-cn
+iso-2022-cn-ext
+utf-8
+iso-8859-13
+iso-8859-14
+iso-8859-15
+gb18030
+ibm850
+gb2312
+big5
+macintosh
+ibm437
+ibm852
+ibm857
+ibm861
+ibm864
+ibm869
+koi8-r
+hz-gb-2312
+ibm866
+ibm775
+big5-hkscs
+windows-1250
+windows-1251
+windows-1252
+windows-1253
+windows-1254
+windows-1255
+windows-1256
+windows-1257
+windows-1258
+message-class
+Personal
+Advertisement
+Informational
+Auto
+level
+filename
+differences
+padding
+start
+start-info
+comment
+domain
+max-age
+path
+secure
+Creation-date
+Modification-date
+Read-date
+Size
+Name
+Filename
+Start
+Start-info
+Comment
+Domain
+Path
+content-disposition
+Form-data
+Attachment
+unknown date type 0x%.2x for field %s
+indexed-date
+MessageDatabaseFull
+MessageDatabaseFull.changed
+CTPhoneNumberRegistrationRequestFinishedNotification
+CTPhoneNumberRegistrationRequestResultKey
+CTPhoneNumberRegistrationResponseNotification
+kCTDataConnectionServiceTypeInternet
+kCTDataConnectionServiceTypeVVM
+kCTDataConnectionServiceTypeMMS
+kCTDataConntectionPushEmail
+kCTDataConnectionServiceTypeWirelessModemTraffic
+kCTDataConnectionServiceTypeWirelessModemAuthentication
+kCTDataConnectionServiceTypeWirelessModem
+kCTDataConnectionServiceTypeCellularDataPlanProvisioning
+MM:dd:yyyy:HH:mm:ss
+notification
+%@%@%@%@
+%@%@%@
+state
+server
+port
+_timestamp
+success
+MSISDN
+plan
+used
+delay
+last-updated
+autorenew
+intl
+bucket
+allowed
+expiry
+STATE
+MBOXUPDATE
+GREETINGCHANGED
+SERVERCHANGED
+UNRECOGNIZED
+DATA-ACTIVATION
+DATA-USAGE
+REG-REQ
+REG-RESP
+LocationServicesDefault
+LocationServicesAvailable
+MapsAvailable
+MapKitAvailable
+MapsVisible
+MapsVisibleGreenTea
+MapsUserShiftingGreenTea
+MapsUserShiftingNonGreenTea
+MapKitAvailableGreenTea
+MapKitUserShiftingGreenTea
+MapKitUserShiftingNonGreenTea
+AllowsVoIP
+kCTCarrierSettingsNewCarrierNotification
+kCTCarrierSettingsNewOperatorNotification
+CTCarrier (%p) {
+Carrier name: [%@]
+Mobile Country Code: [%@]
+Mobile Network Code:[%@]
+ISO Country Code:[%@]
+Allows VOIP? [%@]
+_carrierName
+@"NSString"
+_mobileCountryCode
+_mobileNetworkCode
+_isoCountryCode
+_allowsVOIP
+setCarrierName:
+v12@0:4@8
+carrierName
+mobileCountryCode
+setMobileNetworkCode:
+setIsoCountryCode:
+isoCountryCode
+v12@0:4c8
+allowsVOIP
+isEqual:
+Tc,N,V_allowsVOIP
+T@"NSString",&,N,V_isoCountryCode
+mobileNetworkCode
+T@"NSString",&,N,V_mobileNetworkCode
+T@"NSString",&,N,V_mobileCountryCode
+T@"NSString",&,N,V_carrierName
+CTCarrier
+isMemberOfClass:
+CTTelephonyNetworkInfo-(%s)
+/SourceCache/CoreTelephonyFramework_Sim/CoreTelephony-360.18/CTTelephonyNetworkInfo/../CTTelephonyNetworkInfo/CTTelephonyNetworkInfo.mm
+Could not successfully update network info during initialization.
+Error while setting CTTelephonyNetworkInfo _subscriberCellularProviderDidUpdateNotifier: %d:%d
+Received a notification from a server that is not owned by this CTTelephonyNetworkInfo object
+Received a notification with no notification name
+Received kCTCarrierSettingsNewCarrierNotification notification, but unable to retrieve any information. Notification information: %s
+_subscriberCellularProvider
+@"CTCarrier"
+_subscriberCellularProviderDidUpdateNotifier
+setSubscriberCellularProvider:
+subscriberCellularProvider
+postUpdatesIfNecessary
+handleNotificationFromConnection:ofType:withInfo:
+v20@0:4^v8@12@16
+updateNetworkInfoAndShouldNotifyClient:
+c12@0:4^c8
+getAllowsVOIP:withCTError:
+c16@0:4^c8^{?=ii}12
+getMobileNetworkCode:withCTError:
+c16@0:4@8^{?=ii}12
+getMobileCountryCode:andIsoCountryCode:withCTError:
+c20@0:4@8@12^{?=ii}16
+getCarrierName:withCTError:
+setSubscriberCellularProviderDidUpdateNotifier:
+v12@0:4@?8
+subscriberCellularProviderDidUpdateNotifier
+cleanUpServerConnection
+cleanUpServerConnectionNoLock
+reestablishServerConnectionIfNeeded
+setUpServerConnection
+c8@0:4
+T@"CTCarrier",&,V_subscriberCellularProvider
+CTTelephonyNetworkInfo
+handleFailureInMethod:object:file:lineNumber:description:
+currentHandler
+setAllowsVOIP:
+setMobileCountryCode:
+initWithString:
+setString:
+unlock
+_ServerConnectionCallback
+CTCallCenter(%p): {
+server_connection: %p
+server_machport: %p
+currentCalls: %@
+callEventHandler: %p
+CTCallCenter-(%s)
+info != NULL
+/SourceCache/CoreTelephonyFramework_Sim/CoreTelephony-360.18/CTCallCenter/CTCallCenter.mm
+Reestablished the server connection, but unable to retrieve any information. CTCallCenter: %@
+Reestablished the server connection after the kCTDaemonReadyNotification notification, but unable to retrieve any information. CTCallCenter: %@
+Could not successfully update call center during initialization, CTCallCenter: %s.
+Error while setting CTCallCenter _callEventHandler: %d:%d
+Received a notification from a server that is not owned by this CTCallCenter object
+_internal
+_currentCalls
+@"NSSet"
+_callEventHandler
+broadcastCallStateChangesIfNeededWithFailureLogMessage:
+setCurrentCalls:
+currentCalls
+calculateCallStateChanges:
+c12@0:4@8
+getCurrentCallSetFromServer:
+setCallEventHandler:
+callEventHandler
+@?8@0:4
+dealloc
+v8@0:4
+T@?,C,N
+T@"NSSet",&,D
+CTCallCenter
+valueForKey:
+callState
+setCallState:
+removeObject:
+member:
+nextObject
+objectEnumerator
+removeAllObjects
+copyWithZone:
+lock
+_ServerConnectionCallback
+CTCall (%p) {
+callState: [%@]
+Call ID: [%@]
+CTCallStateDialing
+CTCallStateIncoming
+CTCallStateConnected
+CTCallStateDisconnected
+_callState
+_callID
+callForCTCallRef:
+@12@0:4^{__CTCall=}8
+setCallID:
+callID
+hash
+T@"NSString",C,N,V_callID
+T@"NSString",C,N,V_callState
+isEqualToString:
+kCTPhoneBookSlotKey
+kCTPhoneBookNameKey
+kCTPhoneBookNumberKey
+kCTPhoneBookAltNumberKey
+kCTPhoneBookGroupKey
+kCTPhoneBookAltTextKey
+kCTPhoneBookEmailKey
+kCTPhoneBookHiddenKey
+mobile
+com.apple.AppSupport
+CPNetworkCountryCodeChanged
+CPNetworkCountryCode
+CPActiveCountryCodeChanged
+CPActiveCountryCode
+/var/mobile/Library/Preferences/com.apple.AppSupport.plist
+phoneformat
+Default
+<CPRecordDeleteInfo: %p>
+<CPRecord: %p %s>
+%llu
+SELECT 
+DISTINCT 
+ROWID
+, NULL
+ FROM 
+(%@)
+ AS %@
+CREATE TABLE IF NOT EXISTS 
+constraint->propertyCount > 0
+/SourceCache/AppSupport_Sim/AppSupport-487/Database/CPRecord.c
+hasPrimaryKeyConstraint == false
+ (%@ INTEGER PRIMARY KEY
+ AUTOINCREMENT, 
+ BLOB
+ INTEGER
+ REAL
+ TEXT
+ UNIQUE
+ NOT NULL
+ DEFAULT 0
+, PRIMARY KEY (
+, UNIQUE (
+Changes (record INTEGER, type INTEGER
+CPRecord
+__CPRecordSequenceNumber
+CPRecordSQLite
+%s: database changed externally
+SELECT ROWID FROM %s WHERE %@;
+SELECT ROWID FROM %s;
+SELECT ROWID, record, type
+ FROM %sChanges
+ WHERE 
+ ORDER BY ROWID ASC;
+DELETE FROM %sChanges WHERE ROWID <= ?
+ AND 
+ WHERE ROWID IN ( 
+INSERT INTO %sChanges (ROWID, record, type
+) VALUES(IFNULL(1 + (SELECT MAX(ROWID) FROM %sChanges), 0), ?, ?
+DELETE FROM %s WHERE ROWID = ?;
+(db->flags.threadSafety == 0) || (type == CPSqliteTransactionNone)
+CPRecord/%s instance %p:
+ %d = 
+CPRecordDeleteInfo
+CPRecordStoreCreateTablesForClass
+CPRecordStoreSaveWithPreAndPostCallbacksAndTransactionType
+CPRecordStoreProcessAddedRecordsWithPolicyAndTransactionTypeMatchingPredicate
+_ClientVersion
+SELECT value FROM _SqliteDatabaseProperties WHERE key = ?;
+CPSqliteHasSortKeyPrefix: wrong number of arguments
+CPSqliteNormalizePhoneNumber: wrong number of arguments
+CPSqlitePhoneNumberContainsAlphaCharacters: wrong number of arguments
+CPSqliteComparePhoneNumbers: wrong number of arguments
+%s does not handle raw data types yet.
+%s: %s
+sqlite3 error in %s: %s
+CPSqlite: %s
+Time: %llu ms
+%s: %s for %s
+SQLITE_CORRUPT encountered while accessing %s, exiting
+SQLITE_CORRUPT handling code is unable to delete the corrupt database because the path is unknown.  db=%p, path=%s
+CPSQLEXPLAIN
+CPSQLEXPLAIN_TABLES
+CPSQLEXPLAIN_ONLY_NON_INDEXED
+EXPLAIN QUERY PLAN %s
+----------------------------
+warning: 
+ALTER TABLE
+duplicate column name
+no such table: _SqliteDatabaseProperties
+CREATE TRIGGER
+already exists
+%sCould not compile statement %s: %s
+----- Explaining Query -----
+detail
+WITH INDEX
+USING PRIMARY KEY
+ ***** NO INDEX *****
+--------------------------
+ !!!!! NOT INDEXED !!!!!
+--------------------------
+--------------------------
+ ==>>%s %s
+com.apple.AppSupport-%s
+receivedNotification == 1
+/SourceCache/AppSupport_Sim/AppSupport-487/Database/CPSqliteUtilities.c
+%s-journal
+fixing permissions on %s
+count >= 0
+encountered sqlite error %d: %s
+CPSQLDEBUG
+error %s setting permissions on %s
+PRAGMA cache_size=%d;
+ROLLBACK;
+COMMIT;
+BEGIN IMMEDIATE;
+BEGIN EXCLUSIVE;
+BEGIN;
+INSERT OR REPLACE INTO _SqliteDatabaseProperties VALUES (?, ?);
+_UniqueIdentifier
+SELECT key, value FROM _SqliteDatabaseProperties WHERE key LIKE ?;
+/System/Library/PrivateFrameworks/DataMigration.framework/DataMigration
+DMPerformMigration
+Database version conflict detected: %s
+WARNING: %s may be out of date (version %d, expected %d), we will create a new database.
+pragma legacy_file_format = 0;
+error %d creating properties table: %s
+UPDATE 
+ SET 
+ = ?
+ WHERE ROWID = ?;
+?, ?
+ROWID, 
+INSERT INTO 
+) VALUES (
+ (ROWID) VALUES ( NULL );
+ (ROWID) VALUES ( ? );
+_bindColumnValueAtIndex
+CPSqliteStatementSendResults
+CPSqliteStatementReset
+checkResultWithStatement
+CPSqliteStatementPerform
+CPSqliteConnectionCopyValuesForPropertiesLike
+updateNotifyRegistration
+CREATE TABLE IF NOT EXISTS _SqliteDatabaseProperties (key TEXT, value TEXT, UNIQUE(key));
+_connectAndCheckVersion
+busyHandler
+CPSqliteDatabaseSetNewFileFormatPragma
+ffffff
+22233344455566677778889999
+!5Ng
